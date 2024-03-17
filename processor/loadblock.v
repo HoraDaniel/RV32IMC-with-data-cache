@@ -44,6 +44,9 @@ module loadblock(
 	100 = lbu
 	101 = lhu
 	*/
+	
+	// Original implementation was big-endian [b+3, b+2, b+1, b]
+    // Changed to little-endian to accomodate RISC-V GNU Assembler Output [b, b+1, b+2, b+3]
 
 	parameter LB = 3'd0;
 	parameter LH = 3'd1;
@@ -55,31 +58,31 @@ module loadblock(
 		case(dm_select)
 			LB:
 				case(byte_offset)
-					2'd1: loaddata = { {24{data[15]}}, data[15:8] };
-					2'd2: loaddata = { {24{data[23]}}, data[23:16] };
-					2'd3: loaddata = { {24{data[31]}}, data[31:24] };
-					default: loaddata = { {24{data[7]}}, data[7:0] };
+					2'd1: loaddata = { {24{data[23]}}, data[23:16] };
+					2'd2: loaddata = { {24{data[15]}}, data[15:8] };
+					2'd3: loaddata = { {24{data[7]}}, data[7:0] };
+					default: loaddata = { {24{data[31]}}, data[31:24] };
 				endcase
 			LBU:
 				case(byte_offset)
-					2'd1: loaddata = { 24'd0, data[15:8] };
-					2'd2: loaddata = { 24'd0, data[23:16] };
-					2'd3: loaddata = { 24'd0, data[31:24] };
-					default: loaddata = { 24'd0, data[7:0] };
+					2'd1: loaddata = { 24'd0, data[23:16] };
+					2'd2: loaddata = { 24'd0, data[15:8] };
+					2'd3: loaddata = { 24'd0, data[7:0] };
+					default: loaddata = { 24'd0, data[31:24] };
 				endcase
 			LH:
 				case(byte_offset)
-					2'd2: loaddata = { {16{data[31]}}, data[31:16] };
-					2'd3: loaddata = { {16{data[31]}}, data[31:16] };
-					default: loaddata = { {16{data[15]}}, data[15:0] };
+					2'd2: loaddata = { {16{data[7]}}, data[7:0], data[15:8] };
+					2'd3: loaddata = { {16{data[7]}}, data[7:0], data[15:8] };
+					default: loaddata = { {16{data[23]}}, data[23:16], data[31:24] };
 				endcase
 			LHU:
 				case(byte_offset)
-					2'd2: loaddata = { 16'd0, data[31:16] };
-					2'd3: loaddata = { 16'd0, data[31:16] };
-					default: loaddata = { 16'd0, data[15:0] };
+					2'd2: loaddata = { 16'd0, data[7:0], data[15:8] };
+					2'd3: loaddata = { 16'd0, data[7:0], data[15:8] };
+					default: loaddata = { 16'd0, data[23:16], data[31:24] };
 				endcase
-			default: loaddata = data[31:0];
+			default: loaddata = {data[7:0], data[15:8], data[23:16], data[31:24]};
 		endcase
 	end
 	

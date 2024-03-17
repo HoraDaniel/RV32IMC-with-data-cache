@@ -117,7 +117,8 @@ module sf_controller(
 	input exe_comp_use_A,
 	input exe_comp_use_B,
 	input exe_is_comp,
-	input id_sel_opBR,
+	input id_sel_opBR,             // jalr in ID stage 
+	input exe_sel_opBR,            // jalr in EXE stage
 
 	// Outputs
 	// Forwarding to ID stage
@@ -148,6 +149,7 @@ module sf_controller(
 
 	// Data (Forwarding) Read-After-Write Hazards
     wire hzd_exe_to_id_A;
+    wire hzd_mem_to_id_A;
     wire hzd_mem_to_exe_A;
     wire hzd_mem_to_exe_B;
 
@@ -197,6 +199,7 @@ module sf_controller(
 		.fw_wb_to_exe_B(t_fw_wb_to_exe_B),
 
 		.hzd_exe_to_id_A(hzd_exe_to_id_A),
+		.hzd_mem_to_id_A(hzd_mem_to_id_A),
 		.hzd_mem_to_exe_A(hzd_mem_to_exe_A),
 		.hzd_mem_to_exe_B(hzd_mem_to_exe_B)
 	);
@@ -228,7 +231,8 @@ module sf_controller(
 
     wire loop_jump = (if_pc == id_pc) && is_jump && ~id_sel_opBR && ~id_stall && ~exe_flush;
     
-    wire jalr_hazard = hzd_exe_to_id_A;							// LOAD -> JALR will result in a one-cycle stall for IF and ID stages
+    wire exe_jalr_hazard = hzd_exe_to_id_A && id_sel_opBR;							// LOAD -> JALR (EXE stage) will result in a one-cycle stall for IF and ID stages
+    wire mem_jalr_hazard = hzd_mem_to_id_A && id_sel_opBR;                          // LOAD -> JALR (MEM stage) will result in a one-cycle stall for IF,ID, and EXE stages
     assign load_hazard = (hzd_mem_to_exe_A || hzd_mem_to_exe_B) && !mem_prev_flush;	// LOAD -> Other instruction
     /* load_hazard result:
         1st cycle: no clock for IF, ID, EXE stage registers
@@ -237,14 +241,14 @@ module sf_controller(
     */
     
     // Stalls/Enables
-    assign if_stall = ((load_hazard  && ~mem_prev_flush) || jalr_hazard || div_running || mul_stall);
-    assign id_stall = ((load_hazard  && ~mem_prev_flush) || jalr_hazard || div_running || mul_stall);
-    wire exe_stall = ((load_hazard  && ~mem_prev_flush) || div_running || mul_stall);					
+    assign if_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall);
+    assign id_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall);
+    wire exe_stall = ((load_hazard  && ~mem_prev_flush) || mem_jalr_hazard || div_running || mul_stall);					
 
     // Flushes/Resets
     assign if_flush = ISR_PC_flush;
     assign id_flush = ISR_pipe_flush || jump_flush || branch_flush;
-    assign exe_flush = jalr_hazard || branch_flush || is_nop;
+    assign exe_flush = exe_jalr_hazard || branch_flush || (is_nop && ~(load_hazard  && ~mem_prev_flush));
     assign mem_flush = (load_hazard && ~mem_prev_flush) || div_running || mul_stall;	// flushing the MEM-stage for two straight cycles is disabled for forwarding reasons
     assign wb_flush = 1'b0;
 
@@ -265,8 +269,8 @@ module sf_controller(
 
     assign if_clk_en = shut_down || (~(if_stall || (loop_jump && ~ISR_pipe_flush)) && nrst);
     assign id_clk_en = shut_down || (~(id_stall || (loop_jump && ~ISR_pipe_flush)) && nrst);
-    assign exe_clk_en = shut_down || (~(exe_stall || id_prev_flush || is_nop) && nrst);
-    assign mem_clk_en = shut_down || (~(mem_flush || exe_prev_flush) && nrst);
+    assign exe_clk_en = shut_down || (~(exe_stall || (id_prev_flush && ~exe_flush) || (is_nop && ~exe_flush)) && nrst);
+    assign mem_clk_en = shut_down || (~(mem_flush || (exe_prev_flush && ~mem_jalr_hazard)) && nrst);
     assign wb_clk_en = shut_down || (~mem_prev_flush && nrst);
     assign rf_clk_en = shut_down ||  (~wb_prev_flush && wb_wr_en && nrst);
 

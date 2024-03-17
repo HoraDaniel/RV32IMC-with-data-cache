@@ -21,7 +21,10 @@
 
 `include "constants.vh"
 
-module instmem(
+module instmem #(
+    parameter INSTMEM_PROGRAM = "instmem.mem",
+    parameter ISR_PROGRAM = "isr_mem.mem"
+    )(
 	input sel_ISR,
 
 	input [`PC_ADDR_BITS-1:0] addr,
@@ -34,10 +37,10 @@ module instmem(
     wire [`PC_ADDR_BITS-1:0] addr_2 = addr[`PC_ADDR_BITS-1:1] + 11'd1;
 
 	reg [`MEM_WIDTH-1:0] instmem [0:`MEM_DEPTH-1];
-	reg [`MEM_WIDTH-1:0] isr_mem [0:`MEM_DEPTH-1];
+	reg [`MEM_WIDTH-1:0] isr_mem [0:`ISR_DEPTH-1];
 	initial begin
-		$readmemh("instmem.mem", instmem);
-		$readmemh("isr_mem.mem", isr_mem);
+		$readmemh(INSTMEM_PROGRAM, instmem);
+		$readmemh(ISR_PROGRAM, isr_mem);
 	end
 	assign prog = {instmem[addr_2], instmem[addr_1]};
 	assign isr = {isr_mem[addr_2], isr_mem[addr_1]};

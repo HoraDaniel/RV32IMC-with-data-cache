@@ -18,6 +18,7 @@
 
 `timescale 1ns / 1ps
 `include "constants.vh"
+`include "config.vh"
 
 module alu(
 	input CLK,
@@ -35,20 +36,27 @@ module alu(
 	output signed_less
 );
 
-
-    wire signed [`WORD_WIDTH-1:0]  signed_a;
-    wire signed [`WORD_WIDTH-1:0]  signed_b;
-
-	wire [63:0] mulh_res, mulhsu_res, mulhu_res;
-    
-    assign signed_a = op_a;
-    assign signed_b = op_b;
+        wire signed [`WORD_WIDTH-1:0]  signed_a;
+        wire signed [`WORD_WIDTH-1:0]  signed_b;
+        assign signed_a = op_a;
+        assign signed_b = op_b;
+        
+    `ifdef FEATURE_MULT   
+        wire [63:0] mulh_res = signed_a * signed_b;
+        wire [63:0] mulhu_res = op_a * op_b;
+        wire [63:0] mulhsu_res = signed_a * op_b;
+    `else 
+        wire [63:0] mulh_res = 0;
+        wire [63:0] mulhu_res = 0;
+        wire [63:0] mulhsu_res = 0;
+    `endif
          
 	assign z	=	op_a == op_b;
 	assign less =	op_a < op_b;
 	assign signed_less	=	signed_a < signed_b;
 
 	// Instantiating Multiplier IPs
+    /*
 	wire mulhsu_clken = (ALU_op == `ALU_MULHSU)? 1'b1 : 1'b0;
 	wire mulh_clken = (ALU_op == `ALU_MULH)? 1'b1 : 1'b0;
 	wire mulhu_clken = (ALU_op == `ALU_MULHU || ALU_op == `ALU_MUL)? 1'b1 : 1'b0;
@@ -75,23 +83,30 @@ module alu(
 		.B(op_b),
 		.P(mulhu_res)
 	);
+	*/
 
 	// This controls mul_stall which asserts for one cycle only whenever a multiplication
 	// operation is present.
 	// NOTE: if a load_hazard is present, we delay the update of mul_stall by 1 cycle.
-	reg mul_stall_reg;
-	initial mul_stall_reg = 0;
-	wire is_mul = (ALU_op > 4'd10) & (ALU_op != 4'd15);
-	always@(posedge CLK) begin
-		if(!nrst) 
-			mul_stall_reg <= 0;
-		else if(!load_hazard)
-			mul_stall_reg <= is_mul & mul_stall;
-	end
-	assign mul_stall = ~mul_stall_reg & is_mul;
+    `ifdef FEATURE_MULT
+        reg mul_stall_reg;
+        initial mul_stall_reg = 0;
+        wire is_mul = (ALU_op > 4'd10) & (ALU_op != 4'd15);
+        always@(posedge CLK) begin
+            if(!nrst) 
+                mul_stall_reg <= 0;
+            else if(!load_hazard)
+                mul_stall_reg <= is_mul & mul_stall;
+        end
+        assign mul_stall = ~mul_stall_reg & is_mul;
+    `else
+        assign mul_stall = 0;
+    `endif
+    
 
 	always@(*) begin
 		case(ALU_op)
+		    // base ISA
 			`ALU_ADD: res = op_a + op_b;
 			`ALU_SUB: res = op_a - op_b;
 			`ALU_AND: res = op_a & op_b;
@@ -102,12 +117,14 @@ module alu(
 			`ALU_SLL: res = op_a << op_b[4:0];
 			`ALU_SRL: res = op_a >> op_b[4:0];
 			`ALU_SRA: res = signed_a >>> signed_b[4:0];
-
+            // M extension
 			`ALU_MUL: res = mulhu_res[31:0];
 			`ALU_MULHU: res = mulhu_res[63:32];
 			`ALU_MULH: res = mulh_res[63:32];
 			`ALU_MULHSU: res = mulhsu_res[63:32];
-
+            // division unimplemented
+            
+            //other ops 
 			default: res = 32'h0;
 		endcase
 	end

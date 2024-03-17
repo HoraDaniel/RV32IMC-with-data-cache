@@ -35,21 +35,24 @@ module storeblock(
     
     assign nboff_data = (store_select == sb) ? {24'd0 , opB[7:0]} : (store_select == sh) ? {16'd0, opB[15:0]} : opB ;
     assign data = nboff_data << (8*byte_offset);
+    
+    // Original implementation was big-endian [b+3, b+2, b+1, b]
+    // Changed to little-endian to accomodate RISC-V GNU Assembler Output [b, b+1, b+2, b+3]
 
 	always@(*) begin
 		case(store_select)
 			sb:
 				case({is_stype, byte_offset})
-					3'b100: dm_write <= 4'b0001;
-					3'b101: dm_write <= 4'b0010;
-					3'b110: dm_write <= 4'b0100;
-					3'b111: dm_write <= 4'b1000;
+					3'b100: dm_write <= 4'b1000;
+					3'b101: dm_write <= 4'b0100;
+					3'b110: dm_write <= 4'b0010;
+					3'b111: dm_write <= 4'b0001;
 					default: dm_write <= 4'b0000;
 				endcase
 			sh:
 				case({is_stype, byte_offset})
-					3'b100: dm_write <= 4'b0011;
-					3'b110: dm_write <= 4'b1100;
+					3'b100: dm_write <= 4'b1100;
+					3'b110: dm_write <= 4'b0011;
 					default: dm_write <= 4'b0000;
 				endcase
 			sw:

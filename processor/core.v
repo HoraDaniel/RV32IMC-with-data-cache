@@ -20,8 +20,13 @@
 `timescale 1ns / 1ps
 
 `include "constants.vh"
+`include "config.vh"
 
-module core(
+module core#(
+    parameter DATA_I = "datamem.mem",
+    parameter PROG_I = "instmem.mem",
+    parameter ISR_I = "isr_mem.mem"
+     )(
 	input CLKIP_OUT,			// 50MHz unbuffered clock
 	input CLK_BUF,				// 50MHz buffered clock
 	input nrst,
@@ -413,6 +418,7 @@ module core(
 		.exe_comp_use_B(exe_comp_use_B),
 		.exe_is_comp(exe_is_comp),
 		.id_sel_opBR(id_sel_opBR),
+		.exe_sel_opBR(exe_sel_opBR),
 
 		// Outputs
 		.fw_exe_to_id_A(fw_exe_to_id_A),
@@ -428,37 +434,52 @@ module core(
 	);
 
 // CLOCKS ========================================================
-	BUFGCE en_iF (
+	BUFGCE 
+	#(
+	   .SIM_DEVICE("7SERIES")
+	)
+	en_iF 
+	(
 	 	.I(CLKIP_OUT),
 	 	.CE(if_clk_en),
 	 	.O(if_clk)
 	);
 
-	BUFGCE en_id (
+	BUFGCE #(
+	   .SIM_DEVICE("7SERIES")
+	) en_id (
 	 	.I(CLKIP_OUT),
 	 	.CE(id_clk_en),
 	 	.O(id_clk)
 	);
 
-	BUFGCE en_exe (
+	BUFGCE #(
+	   .SIM_DEVICE("7SERIES")
+	) en_exe (
 	 	.I(CLKIP_OUT),
 	 	.CE(exe_clk_en),
 	 	.O(exe_clk)
 	);
 
-	BUFGCE en_mem (
+	BUFGCE #(
+	   .SIM_DEVICE("7SERIES")
+	) en_mem (
 	 	.I(CLKIP_OUT),
 	 	.CE(mem_clk_en),
 	 	.O(mem_clk)
 	);
 
-	BUFGCE en_wb (
+	BUFGCE #(
+	   .SIM_DEVICE("7SERIES")
+	) en_wb (
 	 	.I(CLKIP_OUT),
 	 	.CE(wb_clk_en),
 	 	.O(wb_clk)
 	);
 
-	BUFGCE en_rf(
+	BUFGCE #(
+	   .SIM_DEVICE("7SERIES")
+	) en_rf(
 	 	.I(CLKIP_OUT),
 	 	.CE(rf_clk_en),
 	 	.O(rf_clk)
@@ -476,7 +497,10 @@ module core(
 		.inst_addr(if_PC)
 	);
 
-	instmem INSTMEM(
+	instmem #(
+	   .INSTMEM_PROGRAM(PROG_I),
+       .ISR_PROGRAM(ISR_I)
+	) INSTMEM (
 		.sel_ISR(sel_ISR),
 
 		.addr(if_PC),
@@ -850,7 +874,9 @@ module core(
 
 
 // MEM Stage =====================================================================
-	datamem DATAMEM(
+	datamem #(
+	   .INITIAL_DATA(DATA_I)
+	) DATAMEM (
 		.core_clk(mem_clk),
 		.con_clk(CLK_BUF),
 		.nrst(nrst),
