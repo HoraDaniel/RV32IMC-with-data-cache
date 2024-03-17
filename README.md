@@ -1,3 +1,21 @@
+# Pipelined RV32IMC Core
+This is a RISC-V RV32IMC core that is currently being adapted for implementation in a test chip as part of [Center for Integrated Devices Research (CIDR) Project 3] (https://cidr.up-microlab.org/index.php/Energy_Efficient_Machine_Learning_Hardware_Co-design).
+
+If you would like to use this core as a reference for your own projects, feel free to cite to cite the paper for the original project.
+
+```
+@INPROCEEDINGS{9293798,
+  author={Neri, Michael Joseph and Immanuel Ridao, Redentor and Baylosis, Victor Emmanuel and Meira Chua, Phoebe and Tan, Allen Jason and Theresa de Leon, Maria and Hizon, John Richard and Rosales, Marc and Rouelli Sabino-Santos, Maria Patricia and Santos, Christopher and Alvarez, Anastacia},
+  booktitle={2020 IEEE REGION 10 CONFERENCE (TENCON)}, 
+  title={Design and Implementation of a Pipelined RV32IMC Processor with Interrupt Support for Large-Scale Wireless Sensor Networks}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={806-811},
+  keywords={Clocks;Registers;Wireless sensor networks;Protocols;Field programmable gate arrays;Process control;Pipelines;RISC-V;Wireless Sensor Networks;Internet of Things;FPGA;Pipelining},
+  doi={10.1109/TENCON50793.2020.9293798}}
+```
+
 # Pipelined RV32IMC: Capstone Project for CoE 198 (2SAY1920)
 This project uses Xilinx IP modules available in Vivado. The design was verified using **Vivado 2019.2**
 
