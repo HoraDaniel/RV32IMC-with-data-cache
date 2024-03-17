@@ -38,16 +38,17 @@
 
 `define INT_SIG_WIDTH 6         // If changing this, make sure to go to mcont.v so interrupt signals match the width
 
-`define MEM_DEPTH 2048          // For Halfword-addressable Instruction Memory
+`define MEM_DEPTH 8192          // For 16kB Halfword-addressable Instruction Memory
+`define ISR_DEPTH 512           // ISR
 `define MEM_WIDTH 16            // Halfwords
 `define WORD_WIDTH 32           // Word width of 32bits; Used for Instructions, operands, and immediates
 
-`define PC_ADDR_BITS 12         // For addressing 4kB Instruction memory
+`define PC_ADDR_BITS 14         // For addressing 16kB Instruction memory
 
 // If changing any of the parameters below, double check datamem.v, since some signals
 // there don't use parameters.
 `define DATAMEM_WIDTH 32        // Block Memory Width; Can be changed with WORD_WIDTH
-`define DATAMEM_DEPTH 1040		// 1024(COREMEM) + 16(PROTOCOLMEM) Block Memory Depth
+`define DATAMEM_DEPTH 8208  	// ~1024~ NEW -- 8192 (COREMEM) + 16(PROTOCOLMEM) Block Memory Depth
 `define DATAMEM_BITS `ceilLog2(`DATAMEM_DEPTH)
 
 `define REGFILE_SIZE 32         // Can be changed if implementing RISC-V Floating point extensions,
@@ -61,22 +62,25 @@
 												// NOTE: the BHT is expected to be a 4-way set associative cache
 												// even if the size is changed.
 
-`define BHT_SET_BITS `ceilLog2(`BHT_ENTRY/4)
-`define BHT_TAG_BITS `BHT_PC_ADDR_BITS - `BHT_SET_BITS
+`define BHT_SET_BITS `ceilLog2(`BHT_ENTRY/4)     // log2(16)=4
+`define BHT_TAG_BITS `BHT_PC_ADDR_BITS - `BHT_SET_BITS      // 9
 `define BHT_ENTRY_BITS 4 + `BHT_TAG_BITS + `BHT_PC_ADDR_BITS    // 4 = 2bits saturating counter + 1bit ISR_running + 1bit valid
+                                                // 4 + 9 + 13 = 26 bits
 
 // For the following parameters, some values will have to be changed manually
-`define BHT_TAG_FIELD `BHT_ENTRY_BITS-2:13      // NOTE: please manually change the LSB when changing PC_ADDR_BITS
+`define BHT_TAG_FIELD `BHT_ENTRY_BITS-2:15      // NOTE: please manually change the LSB when changing PC_ADDR_BITS
                                                 // since Verilog does not allow the use of more than 1 parameter
                                                 // in defining a vector. The LSB should be equivalent to:
                                                 // `BHT_ENTRY_BITS-`BHT_TAG_BITS-2
+                                                // 26 - 9 - 2 = 15
 
 `define BHT_PC_TAG_FIELD `BHT_PC_ADDR_BITS-1:4  // Same with this, please change LSB when
                                                 // changing BHT size. LSB is equivalent to:
                                                 // `BHT_SET_BITS
 
-`define BHT_CNI_TAG_FIELD `BHT_ENTRY_BITS-3:13  // Please change LSB when changing PC_ADDR_BITS
+`define BHT_CNI_TAG_FIELD `BHT_ENTRY_BITS-3:15  // Please change LSB when changing PC_ADDR_BITS
                                                 // LSB = `BHT_ENTRY_BITS-`BHT_TAG_BITS-2
+                                                // 26 - 9 - 2 = 15
 
 // CONTROLLER CONSTANTS
 // Instruction opcodes; can be modified if implementing more extensions
