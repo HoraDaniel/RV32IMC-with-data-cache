@@ -1,3 +1,6 @@
 Assembler+Testbench/Assembler/__pycache__/*
 Assembler+Testbench/Assembler/.DS_Store
 *.pyc
+assembly-tests/riscv-compliance/filecheck.py
+assembly-tests/riscv-compliance/answer-keys/dumpgen.py
+assembly-tests/riscv-compliance/instmem-dump/dumpgen.py
