@@ -6,7 +6,7 @@ The top module has been tested on the following FPGAs:
 + Artix A7-200T on the [Nexys Video Board](https://digilent.com/reference/programmable-logic/nexys-video/start). 
 Constraints files for both FPGAs are provided as part of the code. Other Artix A7-series FPGAs should work once their respective constraints files are set up.
 
-If you would like to use this core as a reference for your own projects, feel free to cite to cite the paper for the original project.
+If you would like to use this core as a reference for your own projects, feel free to cite the paper for the original project.
 
 ```
 @INPROCEEDINGS{9293798,
