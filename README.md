@@ -1,5 +1,10 @@
 # Pipelined RV32IMC Core
-This is a RISC-V RV32IMC core that is currently being adapted for implementation in a test chip as part of [Center for Integrated Devices Research (CIDR) Project 3] (https://cidr.up-microlab.org/index.php/Energy_Efficient_Machine_Learning_Hardware_Co-design).
+This is a RISC-V RV32IMC core that is currently being adapted for implementation in a test chip as part of [Center for Integrated Devices Research (CIDR) Project 3](https://cidr.up-microlab.org/index.php/Energy_Efficient_Machine_Learning_Hardware_Co-design).
+
+The top module has been tested on the following FPGAs:
++ Artix A7-35T on the [Digilent Arty-A7 board](https://digilent.com/reference/programmable-logic/arty-a7/start) (discontinued)
++ Artix A7-200T on the [Nexys Video Board](https://digilent.com/reference/programmable-logic/nexys-video/start). 
+Constraints files for both FPGAs are provided as part of the code. Other Artix A7-series FPGAs should work once their respective constraints files are set up.
 
 If you would like to use this core as a reference for your own projects, feel free to cite to cite the paper for the original project.
 
@@ -64,6 +69,7 @@ Features | Specifications
 ### Using project_run.tcl
 + Edit `SRCDIR` in **project_run.tcl** to location of this repository in your PC
 + Execute using **Tools > Run Tcl Script...** in Vivado
++ ...or by invoking `source <path to>/project_run.tcl` in the Vivado TCL Console.
 
 ### Using assembler.py
 ```python

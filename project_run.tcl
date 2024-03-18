@@ -16,6 +16,10 @@ add_files -fileset constrs_1 ./constraints/arty7_a35t.xdc
 #Add testbench and answer key
 add_files -fileset sim_1 ./sim/tb_top.v
 add_files -fileset sim_1 ./sim/tb_core.v
+# New core-only testbenches
+create_fileset -simset sim_new
+add_files -fileset sim_new ./sim/tb_core_parametrized.sv
+add_files -fileset sim_new ./sim/tb_core_parametrized_single.sv
 add_files ./memory/answerkey.mem
 
 #Set tb_top to be top module of simulation sources
@@ -40,6 +44,11 @@ add_files	{./vivado-ip-src/blk_mem_gen_datamem/blk_mem_gen_datamem.xci	\
 
 # Set arty7_a35t.xdc as target constraints file
 set_property target_constrs_file [format %s%s $SRCDIR "/constraints/arty7_a35t.xdc"] [current_fileset -constrset]
+
+# Add A7-200T constraints file
+create_fileset -constrset constr_a200t
+set_property target_constrs_file [format %s%s $SRCDIR "/constraints/arty7_a200t_nexys.xdc"] [get_filesets constr_a200t]
+
 
 #Generate output products so that instmem.coe and datamem.coe will not be read-only files
 #generate_target synthesis [get_files blk_mem_gen_instmem.xci]
