@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "constants.vh"
+//`include "constants.vh"
 
 // Adapted from Xilinx-provided template
 
@@ -12,11 +12,11 @@ module dual_port_ram_bytewise_write #(
     //---------------------------------------------------------------
     parameter NUM_COL = 4,
     parameter COL_WIDTH = 8,
-    parameter ADDR_WIDTH = `DATAMEM_BITS-1, // Addr Width in bits :
+    parameter ADDR_WIDTH = 12-1, // Addr Width in bits :
      //2**ADDR_WIDTH = RAM Depth
     parameter DATA_WIDTH = NUM_COL*COL_WIDTH, // Data Width in bits
     
-    parameter INITIAL_DATA = "datamem.mem"
+    parameter INITIAL_DATA = "datamem.coe"
     //--------------------------------------------------------------
      ) (
         input clkA,

@@ -1,39 +1,48 @@
-///////////////////////////////////////////////////////////////////////////////
-//    
-//    Company:          Xilinx
-//    Engineer:         Jim Tatsukawa
-//    Date:             7/30/2014
-//    Design Name:      MMCME2 DRP
-//    Module Name:      mmcme2_drp_func.h
-//    Version:          1.04
-//    Target Devices:   UltraScale Architecture || MMCM 
-//    Tool versions:    2014.3
-//    Description:      This header provides the functions necessary to  
-//                      calculate the DRP register values for the V6 MMCM.
-//                      
-//	Revision Notes:	3/22 - Updating lookup_low/lookup_high (CR)
-//				4/13 - Fractional divide function in mmcm_frac_count_calc function. CRS610807
-// 
-//    Disclaimer:  XILINX IS PROVIDING THIS DESIGN, CODE, OR
-//                 INFORMATION "AS IS" SOLELY FOR USE IN DEVELOPING
-//                 PROGRAMS AND SOLUTIONS FOR XILINX DEVICES.  BY
-//                 PROVIDING THIS DESIGN, CODE, OR INFORMATION AS
-//                 ONE POSSIBLE IMPLEMENTATION OF THIS FEATURE,
-//                 APPLICATION OR STANDARD, XILINX IS MAKING NO
-//                 REPRESENTATION THAT THIS IMPLEMENTATION IS FREE
-//                 FROM ANY CLAIMS OF INFRINGEMENT, AND YOU ARE
-//                 RESPONSIBLE FOR OBTAINING ANY RIGHTS YOU MAY
-//                 REQUIRE FOR YOUR IMPLEMENTATION.  XILINX
-//                 EXPRESSLY DISCLAIMS ANY WARRANTY WHATSOEVER WITH
-//                 RESPECT TO THE ADEQUACY OF THE IMPLEMENTATION,
-//                 INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OR
-//                 REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE
-//                 FROM CLAIMS OF INFRINGEMENT, IMPLIED WARRANTIES
-//                 OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-//                 PURPOSE.
-// 
-//                 (c) Copyright 2009-2010 Xilinx, Inc.
-//                 All rights reserved.
+// (c) Copyright 2009-2010, 2023 Advanced Micro Devices, Inc. All rights reserved.
+//
+// This file contains confidential and proprietary information
+// of AMD and is protected under U.S. and international copyright
+// and other intellectual property laws.
+//
+// DISCLAIMER
+// This disclaimer is not a license and does not grant any
+// rights to the materials distributed herewith. Except as
+// otherwise provided in a valid license issued to you by
+// AMD, and to the maximum extent permitted by applicable
+// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
+// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// (2) AMD shall not be liable (whether in contract or tort,
+// including negligence, or under any other theory of
+// liability) for any loss or damage of any kind or nature
+// related to, arising under or in connection with these
+// materials, including for any direct, or any indirect,
+// special, incidental, or consequential loss or damage
+// (including loss of data, profits, goodwill, or any type of
+// loss or damage suffered as a result of any action brought
+// by a third party) even if such damage or loss was
+// reasonably foreseeable or AMD had been advised of the
+// possibility of the same.
+//
+// CRITICAL APPLICATIONS
+// AMD products are not designed or intended to be fail-
+// safe, or for use in any application requiring fail-safe
+// performance, such as life-support or safety devices or
+// systems, Class III medical devices, nuclear facilities,
+// applications related to the deployment of airbags, or any
+// other applications that could lead to death, personal
+// injury, or severe property or environmental damage
+// (individually and collectively, "Critical
+// Applications"). Customer assumes the sole risk and
+// liability of any use of AMD products in Critical
+// Applications, subject only to applicable laws and
+// regulations governing limitations on product liability.
+//
+// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// PART OF THIS FILE AT ALL TIMES.
+////////////////////////////////////////////////////////////
 // 
 ///////////////////////////////////////////////////////////////////////////////
 

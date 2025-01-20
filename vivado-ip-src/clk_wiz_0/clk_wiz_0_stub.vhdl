@@ -1,10 +1,10 @@
--- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+-- Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
--- Date        : Wed Jun 10 22:36:41 2020
--- Host        : Kouzui running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub {C:/Users/MJ/Documents/UP Diliman/5th Year/2nd Sem/CoE
---               198/pipelined-RV32IMC/Vivado Files/ipsrcs/clk_wiz_0/clk_wiz_0_stub.vhdl}
+-- Tool Version: Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
+-- Date        : Sat Nov  9 20:43:03 2024
+-- Host        : DESKTOP-9IG3UKH running 64-bit major release  (build 9200)
+-- Command     : write_vhdl -force -mode synth_stub f:/pipelined-RV32IMC/vivado-ip-src/clk_wiz_0/clk_wiz_0_stub.vhdl
 -- Design      : clk_wiz_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a35ticsg324-1L

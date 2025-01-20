@@ -82,6 +82,9 @@ module pipereg_id_exe(
 
 	input id_is_stype,
 	output reg exe_is_stype,
+	
+	input id_is_ltype,
+	output reg exe_is_ltype,
 
 	input id_wr_en,
 	output reg exe_wr_en,
@@ -194,6 +197,7 @@ module pipereg_id_exe(
 			exe_div_valid <= id_div_valid;
 			exe_div_op <= id_div_op;
 			exe_is_stype <= id_is_stype;
+			exe_is_ltype <= id_is_ltype;
 			exe_wr_en <= id_wr_en;
 			exe_dm_select <= id_dm_select;
 			exe_sel_data <= id_sel_data;

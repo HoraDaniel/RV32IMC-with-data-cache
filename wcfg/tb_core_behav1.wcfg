@@ -11,19 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="100166800fs"></ZoomStartTime>
-      <ZoomEndTime time="100386801fs"></ZoomEndTime>
-      <Cursor1Time time="100335400fs"></Cursor1Time>
+      <ZoomStartTime time="1,870.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="2,026.001 ns"></ZoomEndTime>
+      <Cursor1Time time="1,940.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="157"></NameColumnWidth>
-      <ValueColumnWidth column_width="65"></ValueColumnWidth>
+      <NameColumnWidth column_width="128"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="61" />
-   <wvobject fp_name="/tb_core/CORE/CLK" type="logic">
-      <obj_property name="ElementShortName">CLK</obj_property>
-      <obj_property name="ObjectShortName">CLK</obj_property>
-   </wvobject>
+   <WVObjectSize size="52" />
    <wvobject fp_name="/tb_core/CORE/nrst" type="logic">
       <obj_property name="ElementShortName">nrst</obj_property>
       <obj_property name="ObjectShortName">nrst</obj_property>
@@ -36,8 +32,8 @@
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/if_pcnew" type="array">
-      <obj_property name="ElementShortName">if_pcnew[11:0]</obj_property>
-      <obj_property name="ObjectShortName">if_pcnew[11:0]</obj_property>
+      <obj_property name="ElementShortName">if_pcnew[13:0]</obj_property>
+      <obj_property name="ObjectShortName">if_pcnew[13:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -47,32 +43,20 @@
       <obj_property name="BkColor">#00FF00</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/if_PC" type="array">
-      <obj_property name="ElementShortName">if_PC[11:0]</obj_property>
-      <obj_property name="ObjectShortName">if_PC[11:0]</obj_property>
+      <obj_property name="ElementShortName">if_PC[13:0]</obj_property>
+      <obj_property name="ObjectShortName">if_PC[13:0]</obj_property>
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/id_PC" type="array">
-      <obj_property name="ElementShortName">id_PC[11:0]</obj_property>
-      <obj_property name="ObjectShortName">id_PC[11:0]</obj_property>
+      <obj_property name="ElementShortName">id_PC[13:0]</obj_property>
+      <obj_property name="ObjectShortName">id_PC[13:0]</obj_property>
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/exe_PC" type="array">
-      <obj_property name="ElementShortName">exe_PC[11:0]</obj_property>
-      <obj_property name="ObjectShortName">exe_PC[11:0]</obj_property>
-      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/mem_PC" type="array">
-      <obj_property name="ElementShortName">mem_PC[11:0]</obj_property>
-      <obj_property name="ObjectShortName">mem_PC[11:0]</obj_property>
-      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/wb_PC" type="array">
-      <obj_property name="ElementShortName">wb_PC[11:0]</obj_property>
-      <obj_property name="ObjectShortName">wb_PC[11:0]</obj_property>
+      <obj_property name="ElementShortName">exe_PC[13:0]</obj_property>
+      <obj_property name="ObjectShortName">exe_PC[13:0]</obj_property>
       <obj_property name="CustomSignalColor">#00FFFF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -88,51 +72,12 @@
       <obj_property name="CustomSignalColor">#0000FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_core/CORE/exe_inst" type="array">
-      <obj_property name="ElementShortName">exe_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">exe_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/mem_inst" type="array">
-      <obj_property name="ElementShortName">mem_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">mem_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/wb_inst" type="array">
-      <obj_property name="ElementShortName">wb_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">wb_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
    <wvobject fp_name="group387" type="group">
       <obj_property name="label">INTCON</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_core/CORE/BTN" type="array">
-         <obj_property name="ElementShortName">BTN[3:0]</obj_property>
-         <obj_property name="ObjectShortName">BTN[3:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFFFFF</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/SW" type="array">
-         <obj_property name="ElementShortName">SW[2:0]</obj_property>
-         <obj_property name="ObjectShortName">SW[2:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFFFFF</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/LED" type="array">
-         <obj_property name="ElementShortName">LED[3:0]</obj_property>
-         <obj_property name="ObjectShortName">LED[3:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFFFFF</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/INT_CON/int_sig" type="logic">
-         <obj_property name="ElementShortName">int_sig</obj_property>
-         <obj_property name="ObjectShortName">int_sig</obj_property>
-         <obj_property name="CustomSignalColor">#A52A2A</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/tb_core/CORE/INT_CON/int_sig" type="array">
+         <obj_property name="ElementShortName">int_sig[5:0]</obj_property>
+         <obj_property name="ObjectShortName">int_sig[5:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/INT_CON/sel_ISR" type="logic">
          <obj_property name="ElementShortName">sel_ISR</obj_property>
@@ -147,8 +92,8 @@
          <obj_property name="ObjectShortName">ISR_running</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/INT_CON/save_PC" type="array">
-         <obj_property name="ElementShortName">save_PC[11:0]</obj_property>
-         <obj_property name="ObjectShortName">save_PC[11:0]</obj_property>
+         <obj_property name="ElementShortName">save_PC[13:0]</obj_property>
+         <obj_property name="ObjectShortName">save_PC[13:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFD700</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -156,9 +101,9 @@
          <obj_property name="ElementShortName">ISR_stall_counter[2:0]</obj_property>
          <obj_property name="ObjectShortName">ISR_stall_counter[2:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/INT_CON/ISR_en" type="logic">
-         <obj_property name="ElementShortName">ISR_en</obj_property>
-         <obj_property name="ObjectShortName">ISR_en</obj_property>
+      <wvobject fp_name="/tb_core/CORE/INT_CON/ISR_en" type="array">
+         <obj_property name="ElementShortName">ISR_en[5:0]</obj_property>
+         <obj_property name="ObjectShortName">ISR_en[5:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/INT_CON/ISR_stall" type="logic">
          <obj_property name="ElementShortName">ISR_stall</obj_property>
@@ -176,50 +121,6 @@
    <wvobject fp_name="group183" type="group">
       <obj_property name="label">BHT Outputs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tb_core/CORE/BHT/id_branchtarget" type="array">
-         <obj_property name="ElementShortName">id_branchtarget[9:0]</obj_property>
-         <obj_property name="ObjectShortName">id_branchtarget[9:0]</obj_property>
-         <obj_property name="CustomSignalColor">#0000FF</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/exe_correction" type="array">
-         <obj_property name="ElementShortName">exe_correction[1:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_correction[1:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/if_prediction" type="logic">
-         <obj_property name="ElementShortName">if_prediction</obj_property>
-         <obj_property name="ObjectShortName">if_prediction</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/flush" type="logic">
-         <obj_property name="ElementShortName">flush</obj_property>
-         <obj_property name="ObjectShortName">flush</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/flush_state_reg" type="logic">
-         <obj_property name="ElementShortName">flush_state_reg</obj_property>
-         <obj_property name="ObjectShortName">flush_state_reg</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/flush_state" type="logic">
-         <obj_property name="ElementShortName">flush_state</obj_property>
-         <obj_property name="ObjectShortName">flush_state</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/en" type="logic">
-         <obj_property name="ElementShortName">en</obj_property>
-         <obj_property name="ObjectShortName">en</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/id_jump_in_bht" type="logic">
-         <obj_property name="ElementShortName">id_jump_in_bht</obj_property>
-         <obj_property name="ObjectShortName">id_jump_in_bht</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject fp_name="group198" type="group">
       <obj_property name="label">New PC signals</obj_property>
@@ -228,23 +129,10 @@
          <obj_property name="ElementShortName">sel_pc</obj_property>
          <obj_property name="ObjectShortName">sel_pc</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/if_PBT" type="array">
-         <obj_property name="ElementShortName">if_PBT[9:0]</obj_property>
-         <obj_property name="ObjectShortName">if_PBT[9:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/exe_PBT" type="array">
-         <obj_property name="ElementShortName">exe_PBT[9:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_PBT[9:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/BHT/exe_CNI" type="array">
-         <obj_property name="ElementShortName">exe_CNI[9:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_CNI[9:0]</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject fp_name="group197" type="group">
       <obj_property name="label">SF Controller</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/branch_flush" type="logic">
          <obj_property name="ElementShortName">branch_flush</obj_property>
          <obj_property name="ObjectShortName">branch_flush</obj_property>
@@ -277,14 +165,6 @@
          <obj_property name="ElementShortName">exe_stall</obj_property>
          <obj_property name="ObjectShortName">exe_stall</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/mem_stall" type="logic">
-         <obj_property name="ElementShortName">mem_stall</obj_property>
-         <obj_property name="ObjectShortName">mem_stall</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/wb_stall" type="logic">
-         <obj_property name="ElementShortName">wb_stall</obj_property>
-         <obj_property name="ObjectShortName">wb_stall</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/if_flush" type="logic">
          <obj_property name="ElementShortName">if_flush</obj_property>
          <obj_property name="ObjectShortName">if_flush</obj_property>
@@ -305,10 +185,6 @@
          <obj_property name="ElementShortName">wb_flush</obj_property>
          <obj_property name="ObjectShortName">wb_flush</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/jalr_hazard" type="logic">
-         <obj_property name="ElementShortName">jalr_hazard</obj_property>
-         <obj_property name="ObjectShortName">jalr_hazard</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/load_hazard" type="logic">
          <obj_property name="ElementShortName">load_hazard</obj_property>
          <obj_property name="ObjectShortName">load_hazard</obj_property>
@@ -317,105 +193,43 @@
    <wvobject fp_name="group92" type="group">
       <obj_property name="label">Forwarding signals</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_exe_to_id_A" type="logic">
-         <obj_property name="ElementShortName">fw_exe_to_id_A</obj_property>
-         <obj_property name="ObjectShortName">fw_exe_to_id_A</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_exe_to_id_B" type="logic">
-         <obj_property name="ElementShortName">fw_exe_to_id_B</obj_property>
-         <obj_property name="ObjectShortName">fw_exe_to_id_B</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_mem_to_id_A" type="logic">
-         <obj_property name="ElementShortName">fw_mem_to_id_A</obj_property>
-         <obj_property name="ObjectShortName">fw_mem_to_id_A</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_mem_to_id_B" type="logic">
-         <obj_property name="ElementShortName">fw_mem_to_id_B</obj_property>
-         <obj_property name="ObjectShortName">fw_mem_to_id_B</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_wb_to_id_A" type="logic">
-         <obj_property name="ElementShortName">fw_wb_to_id_A</obj_property>
-         <obj_property name="ObjectShortName">fw_wb_to_id_A</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_wb_to_id_B" type="logic">
-         <obj_property name="ElementShortName">fw_wb_to_id_B</obj_property>
-         <obj_property name="ObjectShortName">fw_wb_to_id_B</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_wb_to_exe_A" type="logic">
-         <obj_property name="ElementShortName">fw_wb_to_exe_A</obj_property>
-         <obj_property name="ObjectShortName">fw_wb_to_exe_A</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/fw_wb_to_exe_B" type="logic">
-         <obj_property name="ElementShortName">fw_wb_to_exe_B</obj_property>
-         <obj_property name="ObjectShortName">fw_wb_to_exe_B</obj_property>
-      </wvobject>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="group205" type="group">
       <obj_property name="label">Forwarding Unit inputs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject fp_name="/tb_core/CORE/FWD/wb_rd" type="array">
-         <obj_property name="ElementShortName">wb_rd[4:0]</obj_property>
-         <obj_property name="ObjectShortName">wb_rd[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/mem_rd" type="array">
-         <obj_property name="ElementShortName">mem_rd[4:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_rd[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/exe_rsA" type="array">
-         <obj_property name="ElementShortName">exe_rsA[4:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_rsA[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/exe_rsB" type="array">
-         <obj_property name="ElementShortName">exe_rsB[4:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_rsB[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/exe_rd" type="array">
-         <obj_property name="ElementShortName">exe_rd[4:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_rd[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/id_rsA" type="array">
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/id_rsA" type="array">
          <obj_property name="ElementShortName">id_rsA[4:0]</obj_property>
          <obj_property name="ObjectShortName">id_rsA[4:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/id_rsB" type="array">
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/id_rsB" type="array">
          <obj_property name="ElementShortName">id_rsB[4:0]</obj_property>
          <obj_property name="ObjectShortName">id_rsB[4:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/exe_wr_en" type="logic">
-         <obj_property name="ElementShortName">exe_wr_en</obj_property>
-         <obj_property name="ObjectShortName">exe_wr_en</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/exe_rsA" type="array">
+         <obj_property name="ElementShortName">exe_rsA[4:0]</obj_property>
+         <obj_property name="ObjectShortName">exe_rsA[4:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/mem_wr_en" type="logic">
-         <obj_property name="ElementShortName">mem_wr_en</obj_property>
-         <obj_property name="ObjectShortName">mem_wr_en</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/exe_rsB" type="array">
+         <obj_property name="ElementShortName">exe_rsB[4:0]</obj_property>
+         <obj_property name="ObjectShortName">exe_rsB[4:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/wb_wr_en" type="logic">
-         <obj_property name="ElementShortName">wb_wr_en</obj_property>
-         <obj_property name="ObjectShortName">wb_wr_en</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/exe_comp_use_A" type="logic">
+         <obj_property name="ElementShortName">exe_comp_use_A</obj_property>
+         <obj_property name="ObjectShortName">exe_comp_use_A</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/id_sel_opA" type="logic">
-         <obj_property name="ElementShortName">id_sel_opA</obj_property>
-         <obj_property name="ObjectShortName">id_sel_opA</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/exe_comp_use_B" type="logic">
+         <obj_property name="ElementShortName">exe_comp_use_B</obj_property>
+         <obj_property name="ObjectShortName">exe_comp_use_B</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/id_sel_opB" type="logic">
-         <obj_property name="ElementShortName">id_sel_opB</obj_property>
-         <obj_property name="ObjectShortName">id_sel_opB</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/fw_exe_to_id_A" type="logic">
+         <obj_property name="ElementShortName">fw_exe_to_id_A</obj_property>
+         <obj_property name="ObjectShortName">fw_exe_to_id_A</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/exe_sel_data" type="array">
-         <obj_property name="ElementShortName">exe_sel_data[2:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_sel_data[2:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/mem_sel_data" type="array">
-         <obj_property name="ElementShortName">mem_sel_data[2:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_sel_data[2:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/wb_sel_data" type="array">
-         <obj_property name="ElementShortName">wb_sel_data[2:0]</obj_property>
-         <obj_property name="ObjectShortName">wb_sel_data[2:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/FWD/id_is_stype" type="logic">
-         <obj_property name="ElementShortName">id_is_stype</obj_property>
-         <obj_property name="ObjectShortName">id_is_stype</obj_property>
+      <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/FWD/fw_exe_to_id_B" type="logic">
+         <obj_property name="ElementShortName">fw_exe_to_id_B</obj_property>
+         <obj_property name="ObjectShortName">fw_exe_to_id_B</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/RF/regfile" type="array">
@@ -425,12 +239,7 @@
       <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="label">Regfile</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/BHT/history_table" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">history_table[0:63][19:0]</obj_property>
-      <obj_property name="ObjectShortName">history_table[0:63][19:0]</obj_property>
-      <obj_property name="label">History Table</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="group166" type="group">
       <obj_property name="label">Control unit output</obj_property>
@@ -499,6 +308,10 @@
          <obj_property name="ElementShortName">sel_opBR</obj_property>
          <obj_property name="ObjectShortName">sel_opBR</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_core/CORE/CONTROL/is_ltype" type="logic">
+         <obj_property name="ElementShortName">is_ltype</obj_property>
+         <obj_property name="ObjectShortName">is_ltype</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group114" type="group">
       <obj_property name="label">Pipereg Outputs</obj_property>
@@ -508,8 +321,8 @@
          <obj_property name="DisplayName">label</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ID_EXE/exe_pc4" type="array">
-         <obj_property name="ElementShortName">exe_pc4[11:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_pc4[11:0]</obj_property>
+         <obj_property name="ElementShortName">exe_pc4[13:0]</obj_property>
+         <obj_property name="ObjectShortName">exe_pc4[13:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFFF00</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -522,12 +335,6 @@
       <wvobject fp_name="/tb_core/CORE/ID_EXE/exe_fwdopB" type="array">
          <obj_property name="ElementShortName">exe_fwdopB[31:0]</obj_property>
          <obj_property name="ObjectShortName">exe_fwdopB[31:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/ID_EXE/exe_inst" type="array">
-         <obj_property name="ElementShortName">exe_inst[31:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_inst[31:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFFF00</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -550,8 +357,8 @@
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ID_EXE/exe_PC" type="array">
-         <obj_property name="ElementShortName">exe_PC[11:0]</obj_property>
-         <obj_property name="ObjectShortName">exe_PC[11:0]</obj_property>
+         <obj_property name="ElementShortName">exe_PC[13:0]</obj_property>
+         <obj_property name="ObjectShortName">exe_PC[13:0]</obj_property>
          <obj_property name="CustomSignalColor">#FFFF00</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -596,12 +403,8 @@
          <obj_property name="DisplayName">label</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_pc4" type="array">
-         <obj_property name="ElementShortName">mem_pc4[11:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_pc4[11:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_inst" type="array">
-         <obj_property name="ElementShortName">mem_inst[31:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_inst[31:0]</obj_property>
+         <obj_property name="ElementShortName">mem_pc4[13:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_pc4[13:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_ALUout" type="array">
          <obj_property name="ElementShortName">mem_ALUout[31:0]</obj_property>
@@ -618,10 +421,6 @@
       <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_rd" type="array">
          <obj_property name="ElementShortName">mem_rd[4:0]</obj_property>
          <obj_property name="ObjectShortName">mem_rd[4:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_PC" type="array">
-         <obj_property name="ElementShortName">mem_PC[11:0]</obj_property>
-         <obj_property name="ObjectShortName">mem_PC[11:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/EXE_MEM/mem_dm_write" type="array">
          <obj_property name="ElementShortName">mem_dm_write[3:0]</obj_property>
@@ -644,12 +443,8 @@
          <obj_property name="DisplayName">label</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/MEM_WB/wb_pc4" type="array">
-         <obj_property name="ElementShortName">wb_pc4[11:0]</obj_property>
-         <obj_property name="ObjectShortName">wb_pc4[11:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_WB/wb_inst" type="array">
-         <obj_property name="ElementShortName">wb_inst[31:0]</obj_property>
-         <obj_property name="ObjectShortName">wb_inst[31:0]</obj_property>
+         <obj_property name="ElementShortName">wb_pc4[13:0]</obj_property>
+         <obj_property name="ObjectShortName">wb_pc4[13:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/MEM_WB/wb_ALUout" type="array">
          <obj_property name="ElementShortName">wb_ALUout[31:0]</obj_property>
@@ -673,10 +468,6 @@
          <obj_property name="ElementShortName">wb_rd[4:0]</obj_property>
          <obj_property name="ObjectShortName">wb_rd[4:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_WB/wb_PC" type="array">
-         <obj_property name="ElementShortName">wb_PC[11:0]</obj_property>
-         <obj_property name="ObjectShortName">wb_PC[11:0]</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/MEM_WB/wb_wr_en" type="logic">
          <obj_property name="ElementShortName">wb_wr_en</obj_property>
          <obj_property name="ObjectShortName">wb_wr_en</obj_property>
@@ -687,47 +478,77 @@
       </wvobject>
    </wvobject>
    <wvobject fp_name="group1382" type="group">
-      <obj_property name="label">DATAMEM</obj_property>
+      <obj_property name="label">DATA_CACHE</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_core/CORE/DATAMEM/FPGAIO" type="array">
-         <obj_property name="ElementShortName">FPGAIO[0:2][31:0]</obj_property>
-         <obj_property name="ObjectShortName">FPGAIO[0:2][31:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/i_data_addr" type="array">
+         <obj_property name="ElementShortName">i_data_addr[12:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_addr[12:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/i_wr" type="logic">
+         <obj_property name="ElementShortName">i_wr</obj_property>
+         <obj_property name="ObjectShortName">i_wr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/controller/state" type="array">
+         <obj_property name="ElementShortName">state[2:0]</obj_property>
+         <obj_property name="ObjectShortName">state[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/controller/i_hit" type="logic">
+         <obj_property name="ElementShortName">i_hit</obj_property>
+         <obj_property name="ObjectShortName">i_hit</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/i_rd" type="logic">
+         <obj_property name="ElementShortName">i_rd</obj_property>
+         <obj_property name="ObjectShortName">i_rd</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[0].data_column /i_weA" type="logic">
+         <obj_property name="ElementShortName">i_weA</obj_property>
+         <obj_property name="ObjectShortName">i_weA</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[1].data_column /i_weA" type="logic">
+         <obj_property name="ElementShortName">i_weA</obj_property>
+         <obj_property name="ObjectShortName">i_weA</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[2].data_column /i_weA" type="logic">
+         <obj_property name="ElementShortName">i_weA</obj_property>
+         <obj_property name="ObjectShortName">i_weA</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[3].data_column /i_weA" type="logic">
+         <obj_property name="ElementShortName">i_weA</obj_property>
+         <obj_property name="ObjectShortName">i_weA</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /i_data_from_core" type="array">
+         <obj_property name="ElementShortName">i_data_from_core[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_from_core[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[1].data_column /i_dm_write" type="array">
+         <obj_property name="ElementShortName">i_dm_write[3:0]</obj_property>
+         <obj_property name="ObjectShortName">i_dm_write[3:0]</obj_property>
          <obj_property name="isExpanded"></obj_property>
-         <wvobject fp_name="/tb_core/CORE/DATAMEM/FPGAIO[0]" type="array">
-            <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="ElementShortName">[0][31:0]</obj_property>
-            <obj_property name="ObjectShortName">[0][31:0]</obj_property>
-            <obj_property name="label">BTN [0]</obj_property>
-         </wvobject>
-         <wvobject fp_name="/tb_core/CORE/DATAMEM/FPGAIO[1]" type="array">
-            <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="ElementShortName">[1][31:0]</obj_property>
-            <obj_property name="ObjectShortName">[1][31:0]</obj_property>
-            <obj_property name="label">SW [1]</obj_property>
-         </wvobject>
-         <wvobject fp_name="/tb_core/CORE/DATAMEM/FPGAIO[2]" type="array">
-            <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="ElementShortName">[2][31:0]</obj_property>
-            <obj_property name="ObjectShortName">[2][31:0]</obj_property>
-            <obj_property name="label">LED [2]</obj_property>
-         </wvobject>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DATAMEM/dm_write" type="array">
-         <obj_property name="ElementShortName">dm_write[3:0]</obj_property>
-         <obj_property name="ObjectShortName">dm_write[3:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/o_stall" type="logic">
+         <obj_property name="ElementShortName">o_stall</obj_property>
+         <obj_property name="ObjectShortName">o_stall</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DATAMEM/data_addr" type="array">
-         <obj_property name="ElementShortName">data_addr[10:0]</obj_property>
-         <obj_property name="ObjectShortName">data_addr[10:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /i_data_from_mem_valid" type="logic">
+         <obj_property name="ElementShortName">i_data_from_mem_valid</obj_property>
+         <obj_property name="ObjectShortName">i_data_from_mem_valid</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DATAMEM/data_in" type="array">
-         <obj_property name="ElementShortName">data_in[31:0]</obj_property>
-         <obj_property name="ObjectShortName">data_in[31:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/tag_array/o_way" type="array">
+         <obj_property name="ElementShortName">o_way[1:0]</obj_property>
+         <obj_property name="ObjectShortName">o_way[1:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DATAMEM/data_out" type="array">
-         <obj_property name="ElementShortName">data_out[31:0]</obj_property>
-         <obj_property name="ObjectShortName">data_out[31:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/tag_array/o_LRU_set_tag_info" type="array">
+         <obj_property name="ElementShortName">o_LRU_set_tag_info[3:0]</obj_property>
+         <obj_property name="ObjectShortName">o_LRU_set_tag_info[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/DATA_CACHE/data_array/\genblk1[0].data_mem_way_n /\genblk1[0].data_column /data_mem[0]" type="array">
+         <obj_property name="ElementShortName">[0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][31:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group1387" type="group">
@@ -740,14 +561,6 @@
       <wvobject fp_name="/tb_core/CORE/DIVIDER/opB" type="array">
          <obj_property name="ElementShortName">opB[31:0]</obj_property>
          <obj_property name="ObjectShortName">opB[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DIVIDER/div_valid" type="logic">
-         <obj_property name="ElementShortName">div_valid</obj_property>
-         <obj_property name="ObjectShortName">div_valid</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/DIVIDER/div_op" type="array">
-         <obj_property name="ElementShortName">div_op[1:0]</obj_property>
-         <obj_property name="ObjectShortName">div_op[1:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/DIVIDER/div_state" type="array">
          <obj_property name="ElementShortName">div_state[1:0]</obj_property>
@@ -1338,6 +1151,10 @@
       <obj_property name="label">---</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_core/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_core/CORE/if_inst" type="array">
       <obj_property name="ElementShortName">if_inst[31:0]</obj_property>
       <obj_property name="ObjectShortName">if_inst[31:0]</obj_property>
@@ -1347,24 +1164,6 @@
    <wvobject fp_name="/tb_core/CORE/id_inst" type="array">
       <obj_property name="ElementShortName">id_inst[31:0]</obj_property>
       <obj_property name="ObjectShortName">id_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/exe_inst" type="array">
-      <obj_property name="ElementShortName">exe_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">exe_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/mem_inst" type="array">
-      <obj_property name="ElementShortName">mem_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">mem_inst[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#0000FF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_core/CORE/wb_inst" type="array">
-      <obj_property name="ElementShortName">wb_inst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">wb_inst[31:0]</obj_property>
       <obj_property name="CustomSignalColor">#0000FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>

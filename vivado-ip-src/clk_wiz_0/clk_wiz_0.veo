@@ -1,5 +1,4 @@
 
-// file: clk_wiz_0.v
 // (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
@@ -60,32 +59,22 @@
 //----------------------------------------------------------------------------
 // __primary_________100.000____________0.010
 
-`timescale 1ps/1ps
+// The following must be inserted into your Verilog file for this
+// core to be instantiated. Change the instance name and port connections
+// (in parentheses) to your own signal names.
 
-(* CORE_GENERATION_INFO = "clk_wiz_0,clk_wiz_v6_0_14_0_0,{component_name=clk_wiz_0,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_ONCHIP,PRIMITIVE=MMCM,num_out_clk=1,clkin1_period=10.000,clkin2_period=10.000,use_power_down=false,use_reset=false,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *)
+//----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 
-module clk_wiz_0 
- (
-  input         clkfb_in,
-  // Clock out ports
-  output        clk_out1,
-  output        clkfb_out,
-  // Status and control signals
-  output        locked,
- // Clock in ports
-  input         clk_in1
- );
+  clk_wiz_0 instance_name
+   (
+    .clkfb_in(clkfb_in),     // input clkfb_in
+    // Clock out ports
+    .clk_out1(clk_out1),     // output clk_out1
+    .clkfb_out(clkfb_out),    // output clkfb_out
+    // Status and control signals
+    .locked(locked),       // output locked
+   // Clock in ports
+    .clk_in1(clk_in1)      // input clk_in1
+);
 
-  clk_wiz_0_clk_wiz inst
-  (
-  .clkfb_in(clkfb_in),
-  // Clock out ports  
-  .clk_out1(clk_out1),
-  .clkfb_out(clkfb_out),
-  // Status and control signals               
-  .locked(locked),
- // Clock in ports
-  .clk_in1(clk_in1)
-  );
-
-endmodule
+// INST_TAG_END ------ End INSTANTIATION Template ---------

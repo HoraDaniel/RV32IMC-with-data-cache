@@ -81,6 +81,7 @@ module core#(
 	wire [1:0] id_div_op;								// For EXE stage 		//
 	wire id_sel_opA, id_sel_opB;						// For EXE stage 		//
 	wire id_is_stype;									// For EXE stage 		//
+	wire id_is_ltype;                                   // For MEM stage (CACHE)// Officially and technically there's no "L-type"; but we need the signal for load instructions for the cache.
 	wire id_is_jump;									// For ID stage 		//
 	wire id_is_btype;									// For ID Stage 		//
 	wire id_is_nop; 									// For ID stage 		//
@@ -146,6 +147,7 @@ module core#(
 	wire exe_div_valid;						// For EXE stage
 	wire [1:0] exe_div_op;					// For EXE stage
 	wire exe_is_stype;						// For EXE stage
+	wire exe_is_ltype;
 	wire [3:0] exe_dm_write;				// For MEM stage
 	wire exe_wr_en;							// For WB stage
 	wire [2:0] exe_dm_select;				// For MEM stage
@@ -257,6 +259,7 @@ module core#(
 	
 	wire if_stall;			// Controls Interrupt Controller stall
 	wire id_stall;			// Controls BHT stall & flush logic
+	wire cache_stall;       // Controls stalls by cache misses
 
 	wire if_flush;			// Controls PC flush
 	wire id_flush;			// Controls IF/ID flush
@@ -278,6 +281,7 @@ module core#(
     wire id_base_sel_opA;
     wire id_base_sel_opB;
     wire id_base_is_stype;
+    wire id_base_is_ltype;
     wire id_base_wr_en;
     wire [`REGFILE_BITS-1:0] id_base_rsA = id_inst[19:15];
     wire [`REGFILE_BITS-1:0] id_base_rsB = id_inst[24:20];
@@ -309,6 +313,7 @@ module core#(
 	wire id_c_sel_pc;
 	wire id_c_sel_opBR;
     wire id_c_is_stype;
+    wire id_c_is_ltypte; // Officially and technically there's no "L-type"; but we need the signal for load instructions for the cache.
     wire id_c_wr_en;
 	wire [1:0] id_c_btype;
 	wire id_c_use_A;
@@ -369,6 +374,7 @@ module core#(
 		// Stall signals
 		.if_stall(if_stall),
 		.id_stall(id_stall),
+		.cache_stall(cache_stall),
 
 		// Flushes/resets
 		.if_flush(if_flush),
@@ -634,6 +640,7 @@ module core#(
 		.sel_opA(id_base_sel_opA),
 		.sel_opB(id_base_sel_opB),
 		.is_stype(id_base_is_stype),
+		.is_ltype(id_base_is_ltype),
 
 		.is_jump(id_base_is_jump),
 		.is_btype(id_base_is_btype),
@@ -688,6 +695,7 @@ module core#(
 		.sel_opBR(id_c_sel_opBR),
 		.sel_pc(id_c_sel_pc),
         .is_stype(id_c_is_stype),
+        .is_ltype(id_c_is_ltype),
         .wr_en(id_c_wr_en),
 		.btype(id_c_btype),
 		.use_A(id_c_use_A),
@@ -710,6 +718,7 @@ module core#(
     assign id_store_select = id_is_comp ? id_c_store_select : id_base_store_select;
     assign id_ALU_op = id_is_comp ? id_c_alu_op : id_base_ALU_op;
     assign id_is_stype = id_is_comp ? id_c_is_stype : id_base_is_stype;
+    assign id_is_ltype = id_is_comp ? id_c_is_ltype : id_base_is_ltype;
     assign id_wr_en = id_is_comp ? id_c_wr_en : id_base_wr_en;
     assign id_imm = id_is_comp ? id_c_imm : id_base_imm;
     assign id_rd = id_is_comp ? id_c_rd : id_base_rd;
@@ -752,6 +761,7 @@ module core#(
 		.id_div_valid(id_div_valid),		.exe_div_valid(exe_div_valid),
 		.id_div_op(id_div_op),				.exe_div_op(exe_div_op),
 		.id_is_stype(id_is_stype),			.exe_is_stype(exe_is_stype),
+		.id_is_ltype(id_is_ltype),          .exe_is_ltype(exe_is_ltype),
 		.id_wr_en(id_wr_en),				.exe_wr_en(exe_wr_en),
 		.id_dm_select(id_dm_select),		.exe_dm_select(exe_dm_select),
 		.id_sel_data(id_sel_data),			.exe_sel_data(exe_sel_data),
@@ -874,6 +884,8 @@ module core#(
 
 
 // MEM Stage =====================================================================
+
+    /*
 	datamem #(
 	   .INITIAL_DATA(DATA_I)
 	) DATAMEM (
@@ -892,7 +904,25 @@ module core#(
 		.data_out(mem_DATAMEMout),
 		.con_out(con_out)
 	);
-
+    */
+    
+    
+    cache_top #(.CACHE_WAY(2), .CACHE_SIZE(4096), .ADDR_BITS(`DATAMEM_BITS-1))
+        DATA_CACHE(
+            .clk(mem_clk), .nrst(nrst),
+            .i_dm_write(exe_dm_write), .i_rd(exe_is_ltype),
+            .i_wr(exe_is_stype), 
+            .i_data_addr(exe_ALUout[`DATAMEM_BITS-2:0]), // put the entire result
+            .i_data(exe_storedata),
+            .i_ready_mm(1'b1),
+            
+            .o_data(mem_DATAMEMout),
+            .o_stall(cache_stall)    
+        
+    );
+    
+    
+    
 	loadblock LOADBLOCK(
 		.data(mem_DATAMEMout),
 		.byte_offset(mem_ALUout[1:0]),

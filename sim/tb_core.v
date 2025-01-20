@@ -97,7 +97,7 @@ module tb_core();
 		wb_clk_counter = 0;
 		rf_clk_counter = 0;
 
-		#100 nrst = 1;
+		#80 nrst = 1;
 	end
 	
 	reg [`WORD_WIDTH-1:0] exe_inst, mem_inst, wb_inst;

@@ -12,7 +12,7 @@
 // Revisions:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+// 7
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 `timescale 1ns / 1ps
@@ -46,6 +46,7 @@ module compressed_decoder(
 
     output sel_pc,                                  // Used to facilitate jumps from the ID stage.
     output is_stype,                                // Used to check instructions that store to memory.
+    output is_ltype,                                // 
     output wr_en,                                   // Used to enable writing to registers in the WB stage.
 
     output is_jump,                                 // Used to check if an instruction is an unconditional jump.
@@ -369,6 +370,7 @@ module compressed_decoder(
     assign rs2 = temp_rs2;
     assign rd = temp_rd;
     assign is_stype = store_inst;
+    assign is_ltype = load_inst;
     assign is_jump = (jr_type || j_type);
     assign is_btype = b_type;
     // immediates

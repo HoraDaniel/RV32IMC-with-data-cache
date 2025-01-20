@@ -31,6 +31,7 @@ module controller1(
     output sel_opA,             // Input to opA selection mux
     output sel_opB,             // Input to opB selection mux
     output is_stype,            // Input to STOREBLOCK
+    output is_ltype,            // Input to CACHE (to signal load instruction)
 
     output is_jump,             // Input to BHT
     output is_btype,            // Input to BHT
@@ -66,6 +67,7 @@ module controller1(
     // 1: imm
 
     assign is_stype = !(opcode == `OPC_STYPE) ? 1'h0 : 1'h1;
+    assign is_ltype = (opcode == `OPC_LOAD) ? 1'b1 : 1'b0;
 
     assign is_btype = (opcode == `OPC_BTYPE)? 1'h1 : 1'h0;
 
