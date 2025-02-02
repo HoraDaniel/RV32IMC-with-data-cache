@@ -66,6 +66,7 @@ module sf_controller(
     input mul_stall,            // Stall due to multiplication
     input div_running,			// Status of Divider unit
     input cache_stall,          // Stall due to cache miss
+    input ocm_stall,            // stall due to ocm or atomics
 
     // Stalls/Enables
 	output if_stall,			// controls PC + instmem stall
@@ -242,9 +243,9 @@ module sf_controller(
     */
     
     // Stalls/Enables
-    assign if_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall || cache_stall);
-    assign id_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall || cache_stall);
-    wire exe_stall = ((load_hazard  && ~mem_prev_flush) || mem_jalr_hazard || div_running || mul_stall || cache_stall);					
+    assign if_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall || cache_stall /*|| ocm_stall*/);
+    assign id_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall || cache_stall /*|| ocm_stall*/);
+    wire exe_stall = ((load_hazard  && ~mem_prev_flush) || mem_jalr_hazard || div_running || mul_stall || cache_stall  /*||ocm_stall*/);					
 
     // Flushes/Resets
     assign if_flush = ISR_PC_flush;

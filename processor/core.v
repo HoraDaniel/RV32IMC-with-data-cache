@@ -38,7 +38,16 @@ module core#(
 	input [3:0] con_write,				// Write enable signal
 	input [`DATAMEM_BITS-1:0] con_addr,	// Word-aligned data address
 	input [`DATAMEM_WIDTH-1:0] con_in,		// Input data from Protocol controllers
-	output [`DATAMEM_WIDTH-1:0] con_out	// Ouput of DATAMEM connected to Protocol controllers
+	output [`DATAMEM_WIDTH-1:0] con_out,	// Ouput of DATAMEM connected to Protocol controllers
+	
+	//inputs from the OCM
+	input grant,
+	output request,
+	output [`DATAMEM_BITS-1:0] OCM_addr,
+	output [3:0] dm_write_OCM,
+	output [`WORD_WIDTH-1:0] OCM_in,
+	input [`WORD_WIDTH-1:0] OCM_out,
+	output OCM_done
 );
 	
 /******************************** DECLARING WIRES *******************************/
@@ -92,6 +101,7 @@ module core#(
 	wire [2:0] id_sel_data;								// For WB stage 		//
 	wire [1:0] id_store_select;							// For EXE stage 		//
 	wire id_sel_opBR;									// For ID stage 		//
+	wire id_is_atomic;                                  // FOR EXE/MEM stage    //
 	//////////////////////////////////////////////////////////////////////////////
 
 	// Inputs to ID/EXE Pipereg 														
@@ -144,6 +154,7 @@ module core#(
 
 	// Control signals
 	wire [3:0] exe_ALU_op;					// For EXE stage
+	wire [3:0] exe_atomic_op;               // For EXE/MEM stage
 	wire exe_div_valid;						// For EXE stage
 	wire [1:0] exe_div_op;					// For EXE stage
 	wire exe_is_stype;						// For EXE stage
@@ -154,11 +165,35 @@ module core#(
 	wire [2:0] exe_sel_data;				// For WB stage
 	wire [1:0] exe_store_select;			// For EXE stage
 	wire exe_sel_opBR;						// For EXE stage
+	wire exe_is_atomic;                     // For EXE/MEM stage
 
 	// Inputs to EXE/MEM Pipereg
 	wire [`WORD_WIDTH-1:0] exe_ALUout;		// ALU output
 	wire [`WORD_WIDTH-1:0] exe_DIVout;		// Divider output
 	wire [`WORD_WIDTH-1:0] exe_storedata;	// Output of STORE BLOCK
+	
+	// For Cache or On chip memory data writing
+	wire [`DATAMEM_BITS-1:0] exe_addr_to_cache;      // route address to cache
+	wire [`WORD_WIDTH-1:0] exe_storedata_to_cache; // From STORE BLOCK -> route to cache
+	wire exe_wr_to_cache;
+	wire exe_rd_to_cache;
+	wire [3:0] exe_dm_write_to_cache;
+	
+	wire [`DATAMEM_BITS-3:0] exe_addr_to_OCMinterface;
+	wire [`WORD_WIDTH-1:0] exe_data_to_OCMinterface;
+	wire exe_wr_to_OCMinterface;
+	wire exe_rd_to_OCMinterface;
+	wire exe_dm_write_to_OCMinterface;
+	
+	wire [`DATAMEM_BITS-1:0] exe_addr_to_cache;
+	wire [`WORD_WIDTH-1:0] exe_data_to_cache;
+	wire exe_wr_to_cache;
+	wire exe_rd_to_cache;
+	wire exe_dm_write_to_cache;
+	
+    wire exe_to_OCM;
+    wire exe_to_cache;
+
 // &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
@@ -181,7 +216,9 @@ module core#(
 	wire [2:0] mem_sel_data;				// For WB stage
 
 	// MEM Stage Datapath Signals
-	wire[`WORD_WIDTH-1:0] mem_DATAMEMout;	// Output of DATAMEM
+	wire [`WORD_WIDTH-1:0] mem_DATAMEMout;	// Output of DATAMEM
+	wire [`WORD_WIDTH-1:0] mem_OCMout;
+	wire [`WORD_WIDTH-1:0] mem_CACHEout;
 
 	// Inputs to MEM/WB Pipereg
 	wire [`WORD_WIDTH-1:0] mem_loaddata;	// Output of LOAD BLOCK
@@ -260,6 +297,7 @@ module core#(
 	wire if_stall;			// Controls Interrupt Controller stall
 	wire id_stall;			// Controls BHT stall & flush logic
 	wire cache_stall;       // Controls stalls by cache misses
+	wire ocm_stall;
 
 	wire if_flush;			// Controls PC flush
 	wire id_flush;			// Controls IF/ID flush
@@ -278,6 +316,7 @@ module core#(
     wire [2:0] id_base_sel_data;
     wire [1:0] id_base_store_select;
     wire [3:0] id_base_ALU_op;
+    wire [3:0] id_atomic_op;
     wire id_base_sel_opA;
     wire id_base_sel_opB;
     wire id_base_is_stype;
@@ -375,6 +414,7 @@ module core#(
 		.if_stall(if_stall),
 		.id_stall(id_stall),
 		.cache_stall(cache_stall),
+		.ocm_stall(ocm_stall),
 
 		// Flushes/resets
 		.if_flush(if_flush),
@@ -635,6 +675,7 @@ module core#(
 
 		// Outputs
 		.ALU_op(id_base_ALU_op),
+		.atomic_op(),
 		.div_valid(id_div_valid),
 		.div_op(id_div_op),
 		.sel_opA(id_base_sel_opA),
@@ -644,6 +685,9 @@ module core#(
 
 		.is_jump(id_base_is_jump),
 		.is_btype(id_base_is_btype),
+		
+		.is_atomic(id_is_atomic),
+		
 
 		.wr_en(id_base_wr_en),
 		.dm_select(id_base_dm_select),
@@ -756,6 +800,7 @@ module core#(
 
 		// Control signals go here
 		.id_ALU_op(id_ALU_op),				.exe_ALU_op(exe_ALU_op),
+		.id_atomic_op(id_atomic_op),        .exe_atomic_op(exe_atomic_op),
 		.id_c_btype(id_c_btype),			.exe_c_btype(exe_c_btype),
 		.id_sel_opBR(id_sel_opBR),			.exe_sel_opBR(exe_sel_opBR),
 		.id_div_valid(id_div_valid),		.exe_div_valid(exe_div_valid),
@@ -770,7 +815,8 @@ module core#(
 		.id_comp_use_B(id_c_use_B),			.exe_comp_use_B(exe_comp_use_B),
 		.id_is_comp(id_is_comp),			.exe_is_comp(exe_is_comp),
 		.id_rs1(id_rsA),					.exe_rs1(exe_rsA),
-		.id_rs2(id_rsB),					.exe_rs2(exe_rsB)
+		.id_rs2(id_rsB),					.exe_rs2(exe_rsB),
+		.id_is_atomic(id_is_atomic),        .exe_is_atomic(exe_is_atomic)
 	);
 
 
@@ -780,6 +826,8 @@ module core#(
 	assign opA = fw_wb_to_exe_A? wb_loaddata : exe_fwdopA;
 	assign opB = (fw_wb_to_exe_B && !exe_is_stype) ? wb_loaddata : exe_fwdopB;
 
+    
+    
 	assign exe_rstore = (fw_wb_to_exe_B && exe_is_stype)? wb_loaddata : exe_fwdstore;
 
 	alu ALU(
@@ -903,16 +951,68 @@ module core#(
 
 		.data_out(mem_DATAMEMout),
 		.con_out(con_out)
+		
 	);
     */
+    /*
+    MEM_ADDR_ROUTE#(.ADDR_BITS(`DATAMEM_BITS))
+        MEM_ADDR_ROUTE(
+            .i_addr(exe_ALUout[`DATAMEM_BITS-1:0]), 
+            .i_is_atomic(exe_is_atomic),
+            .i_data(exe_storedata), 
+            .i_dm_write(exe_dm_write), 
+            .i_wr(exe_is_stype), 
+            .i_rd(exe_is_ltype),
+            
+            .o_to_OCM(exe_to_OCM),
+            .o_to_cache(exe_to_cache),
+            
+            .o_addr_to_OCM(exe_addr_to_OCMinterface),
+            .o_dm_write_to_OCM(exe_dm_write_to_OCMinterface),
+            .o_wr_to_OCM(exe_wr_to_OCMinterface),
+            .o_rd_to_OCM(exe_rd_to_OCMinterface),
+            .o_data_to_OCM(exe_data_to_OCMinterface),
+            
+            .o_addr_to_cache(exe_addr_to_cache),
+            .o_dm_write_to_cache(exe_dm_write_to_cache),
+            .o_wr_to_cache(exe_wr_to_cache),
+            .o_rd_to_cache(exe_rd_to_cache),
+            .o_data_to_cache(exe_data_to_cache)
+            
+            
+        );
     
-    
-    cache_top #(.CACHE_WAY(2), .CACHE_SIZE(4096), .ADDR_BITS(`DATAMEM_BITS-1))
+
+    // The atomic module also serves as the OCM interface
+    ATOMIC_MODULE#(.ADDR_BITS(`DATAMEM_BITS))
+        ATOMIC_ALU(
+            .clk(mem_clk), .nrst(nrst),
+            .i_wr(exe_wr_to_OCMinterface), .i_rd(exe_rd_to_OCMinterface),
+            .i_is_atomic(exe_is_atomic),
+            .i_data_from_core(exe_data_to_OCMinterface),
+            .i_data_from_OCM(OCM_out),
+            .i_addr(exe_addr_to_OCMinterface),
+            .i_dm_write(exe_dm_write),
+            .i_atomic_op(exe_atomic_op),
+            .i_opB(opB),
+            .i_grant(grant),
+            
+            .o_data_to_OCM(OCM_in),
+            .o_addr(OCM_addr),
+            .o_dm_write(dm_write_OCM),
+            .o_data_to_WB(mem_OCMout),
+            .o_request(request),
+            .o_done(OCM_done),
+            .o_stall_atomic(ocm_stall)
+        );
+        
+    */
+    cache_top #(.CACHE_WAY(2), .CACHE_SIZE(4096), .ADDR_BITS(`DATAMEM_BITS))
         DATA_CACHE(
             .clk(mem_clk), .nrst(nrst),
             .i_dm_write(exe_dm_write), .i_rd(exe_is_ltype),
             .i_wr(exe_is_stype), 
-            .i_data_addr(exe_ALUout[`DATAMEM_BITS-2:0]), // put the entire result
+            .i_data_addr(exe_ALUout[`DATAMEM_BITS-1:0]), // put the entire result
             .i_data(exe_storedata),
             .i_ready_mm(1'b1),
             
@@ -921,7 +1021,7 @@ module core#(
         
     );
     
-    
+    //assign mem_DATAMEMout = (exe_to_OCM) ? mem_OCMout : mem_CACHEout;
     
 	loadblock LOADBLOCK(
 		.data(mem_DATAMEMout),

@@ -112,7 +112,13 @@ module pipereg_id_exe(
 	output reg [`REGFILE_BITS-1:0] exe_rs1,
 
 	input [`REGFILE_BITS-1:0] id_rs2,
-	output reg [`REGFILE_BITS-1:0] exe_rs2
+	output reg [`REGFILE_BITS-1:0] exe_rs2,
+	
+	input id_is_atomic,
+	output reg exe_is_atomic,
+	
+	input [3:0] id_atomic_op,
+	output reg [3:0] exe_atomic_op 
 );
 	
 	initial begin
@@ -190,6 +196,7 @@ module pipereg_id_exe(
 
 			// Control signals
 			exe_ALU_op <= id_ALU_op;
+			exe_atomic_op <= id_atomic_op;
 
 			exe_c_btype <= id_c_btype;
 			exe_sel_opBR <= id_sel_opBR;
@@ -207,6 +214,7 @@ module pipereg_id_exe(
 			exe_is_comp <= id_is_comp;
 			exe_rs1 <= id_rs1;
 			exe_rs2 <= id_rs2;
+			exe_is_atomic <= id_is_atomic;
 		end
 	end
 

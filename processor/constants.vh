@@ -48,7 +48,7 @@
 // If changing any of the parameters below, double check datamem.v, since some signals
 // there don't use parameters.
 `define DATAMEM_WIDTH 32        // Block Memory Width; Can be changed with WORD_WIDTH
-`define DATAMEM_DEPTH 8208  	// ~1024~ NEW -- 8192 (COREMEM) + 16(PROTOCOLMEM) Block Memory Depth
+`define DATAMEM_DEPTH 16384  	// ~1024~ NEW -- 8192 (COREMEM) + 16(PROTOCOLMEM) Block Memory Depth
 `define DATAMEM_BITS `ceilLog2(`DATAMEM_DEPTH)
 
 `define REGFILE_SIZE 32         // Can be changed if implementing RISC-V Floating point extensions,
@@ -94,6 +94,7 @@
 `define OPC_RTYPE 7'h33
 `define OPC_LOAD 7'h03
 `define OPC_URET 7'h73
+`define OPC_ATOMIC 7'h2F
 
 // ALU opcodes
 `define ALU_ADD 4'd1
@@ -110,5 +111,20 @@
 `define ALU_MULH 4'd12
 `define ALU_MULHSU 4'd13
 `define ALU_MULHU 4'd14
+`define ALU_ATOMIC 4'd15
+
+// ATOMIC opcodes
+// For 32 bit words
+// aq and rl are not set
+`define ATOMIC_SWAP 4'd1
+`define ATOMIC_ADD 4'd2
+`define ATOMIC_XOR 4'd3
+`define ATOMIC_AND 4'd4
+`define ATOMIC_OR 4'd5
+`define ATOMIC_MIN 4'd6
+`define ATOMIC_MAX 4'd7
+`define ATOMIC_MINU 4'd8
+`define ATOMIC_MAXU 4'd9
+
 
 `endif	// CONST_VH

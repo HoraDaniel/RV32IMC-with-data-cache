@@ -88,6 +88,10 @@ module top(
 	wire uart_enc;	assign ck_io7 = uart_enc;
 	wire uart_dec;	assign uart_dec = ck_io8;
 
+
+    //
+
+
 /*=== INSTANTIATING MODULES ===*/
 	// Generate using LogiCORE Clocking Wizard from Vivado IP Catalog
 	// MMCM, Minimize Power, Drive No Buffer, 50MHz output
@@ -124,7 +128,16 @@ module top(
 		.con_addr(con_addr),
 		.con_in(con_in),
 
-		.con_out(con_out)
+		.con_out(con_out),
+		
+		.grant(core_1_grant),
+		.request(core_1_request),
+		.OCM_addr(),
+		.dm_write_OCM(),
+		.OCM_in(),
+		.OCM_out(),
+		.OCM_done()
+		
 	);
 
 	// Protocol controllers
@@ -169,5 +182,7 @@ module top(
 	// 	if(nrst & locked) ila_ctr <= ila_ctr + 1;
 	// 	else ila_ctr <= 0;
 	// end
+    
+    
 
 endmodule

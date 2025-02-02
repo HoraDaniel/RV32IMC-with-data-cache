@@ -37,6 +37,9 @@ module dual_port_ram_bytewise_write #(
     
     initial begin
         $readmemh(INITIAL_DATA, ram_block);
+        ram_block[0] <= 32'HFFFFF111;
+        ram_block[1] <= 32'h1;
+        ram_block[12'h123] <= 32'hEEEEEEEE;
     end
     
     integer i;

@@ -26,6 +26,7 @@ module controller1(
     input [6:0] funct7,
 
     output [3:0] ALU_op,        // Input to ALU
+    output [3:0] atomic_op,     // Input to the Atomic module
     output div_valid,			// Input to Divider unit (based on tvalid input of Divider IP Module)
     output [1:0] div_op,		// Input to Divider unit
     output sel_opA,             // Input to opA selection mux
@@ -35,6 +36,8 @@ module controller1(
 
     output is_jump,             // Input to BHT
     output is_btype,            // Input to BHT
+    
+    output is_atomic,           // Atomic signal 
 
     output wr_en,               // Input to regfile
     output [2:0] dm_select,     // Input to LOADBLOCK
@@ -61,13 +64,14 @@ module controller1(
     // 0: select PC as operand
     // 1: select rfoutA as operand
 
-    assign sel_opB = (opcode == `OPC_RTYPE || opcode == `OPC_BTYPE) ? 1'h0 : 1'h1;  
+    assign sel_opB = (opcode == `OPC_RTYPE || opcode == `OPC_BTYPE || opcode == `OPC_ATOMIC) ? 1'h0 : 1'h1;  
     //sel_opB = 0 if R-type inst or B-type inst
     // 0: rfoutB
     // 1: imm
 
     assign is_stype = !(opcode == `OPC_STYPE) ? 1'h0 : 1'h1;
-    assign is_ltype = (opcode == `OPC_LOAD) ? 1'b1 : 1'b0;
+    assign is_ltype = (opcode == `OPC_LOAD) ? 1'b1 : 1'b0; // no technical L-type, just indicates that this is a load instruction
+    assign is_atomic = (opcode == `OPC_ATOMIC) ? 1'b1 : 1'b0;
 
     assign is_btype = (opcode == `OPC_BTYPE)? 1'h1 : 1'h0;
 
@@ -95,14 +99,14 @@ module controller1(
 
     assign sel_data = (opcode == `OPC_JAL || opcode == `OPC_JALR) ? 3'h0 : 
 					  (opcode == `OPC_LUI) ? 3'h2 : 
-					  (opcode == `OPC_LOAD) ? 3'h3 :
+					  (opcode == `OPC_LOAD || opcode == `OPC_ATOMIC) ? 3'h3 :
 					  (opcode == `OPC_RTYPE && funct7 == 7'h1 && funct3[2] == 1)? 3'h4 :
 					  3'h1;
     //sel_data
     // 0 if J-type inst (select PC+4)
     // 1 if R-type, I-type arithmetic, AUIPC (select ALUout)
     // 2 if LUI (select Immediate)
-    // 3 if I-type inst [load] (select Loaddata)
+    // 3 if I-type inst [load], ATOMIC (select Loaddata)
     // 4 if DIV[U]/REM[U] (select DIVout)
 
     assign store_select = (opcode == `OPC_STYPE && funct3 == 3'h0) ? 2'h0 : 
@@ -111,6 +115,7 @@ module controller1(
     // 0 if SB
     // 1 if SH
     // 2 if SW
+    
 
     assign ALU_op = (opcode == `OPC_RTYPE && funct3 == 3'h0 && funct7 == 7'h20)?								`ALU_SUB	: 
                     (funct3 == 3'h7 && (opcode == `OPC_RTYPE || opcode == `OPC_ITYPE))? 						`ALU_AND	: 
@@ -126,7 +131,8 @@ module controller1(
                     (funct3 == 3'h1 && funct7 == 7'h1 && opcode == `OPC_RTYPE)? `ALU_MULH	:
                     (funct3 == 3'h2 && funct7 == 7'h1 && opcode == `OPC_RTYPE)? `ALU_MULHSU	:
                     (funct3 == 3'h3 && funct7 == 7'h1 && opcode == `OPC_RTYPE)? `ALU_MULHU	:
-                    4'h1;
+                    (opcode == `OPC_ATOMIC) ?  4'd15                                        :
+                    4'd1;
     //ALU_op
     // 1 if ADD (R-type), ADDI (I-type), I-type [load], S-type
     // 2 if SUB (R-type)
@@ -143,6 +149,7 @@ module controller1(
     // 12 if MULH
     // 13 if MULHSU
     // 14 if MULHU
+    // 15 if Atomic (i.e. pass the opA without operation)
 
     assign div_op = (funct3 == 3'h4 && funct7 == 7'h1 && opcode == `OPC_RTYPE)? 2'd0	:
     				(funct3 == 3'h5 && funct7 == 7'h1 && opcode == `OPC_RTYPE)? 2'd1	:
@@ -150,7 +157,29 @@ module controller1(
     				2'd3;
     // div_op
     // 0 if DIV, 1 if DIVU, 2 if REM, 3 (REMU) by 'default'
-
+    
+    
+    assign atomic_op =  (opcode == `OPC_ATOMIC && funct7 == 7'h04)? `ATOMIC_SWAP     :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'h00)? `ATOMIC_ADD      :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'h10) ? `ATOMIC_XOR     :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'h30) ?  `ATOMIC_AND    :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'h40)  ? `ATOMIC_MIN    :
+                         (opcode == `OPC_ATOMIC && funct7 == 7'h50)  ? `ATOMIC_MAX   :
+                         (opcode == `OPC_ATOMIC && funct7 == 7'h60)  ? `ATOMIC_MINU  :
+                         (opcode == `OPC_ATOMIC && funct7 == 7'h70)  ? `ATOMIC_MAXU  : 
+                         4'd0;   
+    // atomic_op
+    // aq and rl not set
+    // 0 nop
+    // 1 if AMOSWAP
+    // 2 if AMOADD
+    // 3 if AMOXOR
+    // 4 if AMOAND
+    // 5 if AMOMIN
+    // 6 if AMOMAX
+    // 7 if AMOMINU
+    // 8 if AMOMAXU
+    
     assign div_valid = ((funct3 == 3'h4 || funct3 == 3'h5 || funct3 == 3'h6 || funct3 == 3'h7) && funct7 == 7'h1 && opcode == `OPC_RTYPE);
     // div_valid
     // assert if the instruction is DIV[U]/REM[U]

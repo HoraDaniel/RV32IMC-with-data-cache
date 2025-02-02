@@ -33,7 +33,7 @@ module refill_controller
     input                   i_refill_en,
     input                   ready_mm,
     output [127:0]          o_data_block,
-    output  [ADDR_BITS-1:0]  o_addr_to_mem,
+    output  [ADDR_BITS-3:0]  o_addr_to_mem,
     output                 o_done,
     output [2:0]            counter_probe
     );

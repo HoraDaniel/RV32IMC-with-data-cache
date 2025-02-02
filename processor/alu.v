@@ -56,7 +56,7 @@ module alu(
 	assign signed_less	=	signed_a < signed_b;
 
 	// Instantiating Multiplier IPs
-    /*
+    
 	wire mulhsu_clken = (ALU_op == `ALU_MULHSU)? 1'b1 : 1'b0;
 	wire mulh_clken = (ALU_op == `ALU_MULH)? 1'b1 : 1'b0;
 	wire mulhu_clken = (ALU_op == `ALU_MULHU || ALU_op == `ALU_MUL)? 1'b1 : 1'b0;
@@ -83,7 +83,7 @@ module alu(
 		.B(op_b),
 		.P(mulhu_res)
 	);
-	*/
+	
 
 	// This controls mul_stall which asserts for one cycle only whenever a multiplication
 	// operation is present.
@@ -124,7 +124,8 @@ module alu(
 			`ALU_MULHSU: res = mulhsu_res[63:32];
             // division unimplemented
             
-            //other ops 
+            //other ops
+            `ALU_ATOMIC:  res = op_a;
 			default: res = 32'h0;
 		endcase
 	end

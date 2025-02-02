@@ -15,7 +15,16 @@ module tb_core();
 	wire [`WORD_WIDTH-1:0] con_out;
 
 	reg [`WORD_WIDTH-1:0] last_inst;
-
+    
+    
+    wire core_1_grant;
+    wire core_1_request;
+    wire [`WORD_WIDTH-1:0] core_1_data_to_OCM;
+    wire [`DATAMEM_BITS-3:0] core_1_addr_to_OCM;
+    wire [3:0] core_1_dm_write_to_OCM;
+    wire core_1_done;
+    wire [`WORD_WIDTH-1:0] core_1_data_from_OCM;
+    
 	core CORE(
 		.CLKIP_OUT(CLK),
 		.CLK_BUF(CLK),
@@ -27,9 +36,29 @@ module tb_core();
 		.con_addr(con_addr),
 		.con_in(con_in),
 
-		.con_out(con_out)
+		.con_out(con_out),
+		
+		.grant(core_1_grant),
+		.request(core_1_request),
+		.OCM_addr(core_1_addr_to_OCM),
+		.dm_write_OCM(core_1_dm_write_to_OCM),
+		.OCM_in(core_1_data_to_OCM),
+		.OCM_out(core_1_data_from_OCM),
+		.OCM_done(core_1_done)
 	);
-
+    // On chip memory external to the core
+    OCM #(.ADDR_BITS(`DATAMEM_BITS))
+        ON_CHIP_MEMORY(
+            .clk(CLK), .nrst(nrst),
+            .i_req_core_1(core_1_request),
+            .i_done_core_1(core_1_done),
+            .o_grant_core_1(core_1_grant),
+            .i_data_core_1(core_1_data_to_OCM),
+            .i_dm_write_core_1(core_1_dm_write_to_OCM),
+            .o_data_core_1(core_1_data_from_OCM),
+            .i_addr_1(core_1_addr_to_OCM)
+        );
+        
 	answerkey AK();
 
 	always
@@ -41,16 +70,18 @@ module tb_core();
 	integer print_metrics = 0;
 
 	// Various counters for checking performance of the core
-	integer clock_counter, stall_counter, cumulative_stall_counter;
+	integer clock_counter, stall_counter, cumulative_stall_counter, hit_counter;
 	integer cumulative_flush_counter;
 	integer if_clk_counter, id_clk_counter, exe_clk_counter, mem_clk_counter, wb_clk_counter, rf_clk_counter;
+	
+	
 
 	// Counters for checking BHT accuracy for each entry
 	reg [31:0] bht_correct [0:`BHT_ENTRY-1];
 	reg [31:0] bht_accesses [0:`BHT_ENTRY-1];
 	reg [31:0] bht_overwrites [0:(`BHT_ENTRY/4)-1];
 	integer total_bht_correct, total_bht_accesses, total_bht_overwrites;
-
+    
 	// Counter for NOPs (base & compressed versions)
 	integer nop_counter;
 
@@ -96,7 +127,8 @@ module tb_core();
 		mem_clk_counter = 0;
 		wb_clk_counter = 0;
 		rf_clk_counter = 0;
-
+        hit_counter = 0;
+        
 		#80 nrst = 1;
 	end
 	
@@ -209,6 +241,8 @@ module tb_core();
 			else
 				stall_counter <= 0;
 	end
+	
+
 
 	// Tracking total clock cycles the pipeline was stalled
 	always@(posedge CLK) begin
@@ -427,6 +461,12 @@ module tb_core();
 			bht_entry_display();
 			$display("------");
 		end */
+		
+		$display("---| Cache Performance Metrics |---");
+		$display("Memory Accesses: %0d.", CORE.DATA_CACHE.memory_access_counter);
+		$display("Hit Counter: %0d.", CORE.DATA_CACHE.hit_counter);
+		$display("Hit rate: %f%%", 100*$itor(CORE.DATA_CACHE.hit_counter) / $itor(CORE.DATA_CACHE.memory_access_counter));
+		
 		$finish;
 	end
 endmodule

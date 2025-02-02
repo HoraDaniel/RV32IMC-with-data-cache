@@ -178,7 +178,7 @@ module cache_top
         
      // Instantiate the BRAM
      // for now
-     dual_port_bram # (.ADDR_WIDTH(ADDR_BITS))
+     dual_port_bram # (.ADDR_WIDTH(ADDR_BITS-2))
         bram(
             // PORT A - refills
             .clkA(clk),
@@ -195,4 +195,27 @@ module cache_top
             .dinB(data_to_memB)
             
         );
+        
+        
+     // Tracking efficiency
+     integer hit_counter;   
+     integer memory_access_counter;
+     reg [ADDR_BITS-1:0] last_addr;
+     
+     initial begin
+        last_addr <= 0;
+        hit_counter = 0;
+        memory_access_counter = 0;
+     end
+     always @ (posedge clk) begin
+        if (!nrst) begin
+            last_addr <= 0;
+        end else begin 
+            last_addr <= i_data_addr;
+            
+            if ( (i_rd || i_wr) && !(last_addr == i_data_addr)) memory_access_counter  = memory_access_counter + 1;
+            if ( (i_rd || i_wr) && !(last_addr == i_data_addr) && hit) hit_counter  = hit_counter + 1;
+            
+        end
+     end 
 endmodule
