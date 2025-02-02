@@ -954,7 +954,7 @@ module core#(
 		
 	);
     */
-    /*
+    
     MEM_ADDR_ROUTE#(.ADDR_BITS(`DATAMEM_BITS))
         MEM_ADDR_ROUTE(
             .i_addr(exe_ALUout[`DATAMEM_BITS-1:0]), 
@@ -1006,22 +1006,22 @@ module core#(
             .o_stall_atomic(ocm_stall)
         );
         
-    */
+    
     cache_top #(.CACHE_WAY(2), .CACHE_SIZE(4096), .ADDR_BITS(`DATAMEM_BITS))
         DATA_CACHE(
             .clk(mem_clk), .nrst(nrst),
-            .i_dm_write(exe_dm_write), .i_rd(exe_is_ltype),
-            .i_wr(exe_is_stype), 
-            .i_data_addr(exe_ALUout[`DATAMEM_BITS-1:0]), // put the entire result
-            .i_data(exe_storedata),
+            .i_dm_write(exe_dm_write_to_cache), .i_rd(exe_rd_to_cache),
+            .i_wr(exe_wr_to_cache), 
+            .i_data_addr(exe_addr_to_cache), // put the entire result
+            .i_data(exe_data_to_cache),
             .i_ready_mm(1'b1),
             
-            .o_data(mem_DATAMEMout),
+            .o_data(mem_CACHEout),
             .o_stall(cache_stall)    
         
     );
     
-    //assign mem_DATAMEMout = (exe_to_OCM) ? mem_OCMout : mem_CACHEout;
+    assign mem_DATAMEMout = (exe_to_OCM) ? mem_OCMout : mem_CACHEout;
     
 	loadblock LOADBLOCK(
 		.data(mem_DATAMEMout),

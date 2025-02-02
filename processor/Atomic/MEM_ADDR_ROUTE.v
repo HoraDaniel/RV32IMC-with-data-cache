@@ -63,7 +63,7 @@ module MEM_ADDR_ROUTE#
     wire to_cache;
     
     assign to_OCM = (i_addr <= ONCHIP_MEM_END && (i_rd || i_wr || i_is_atomic)) ? 1'b1 : 1'b0;
-    assign to_cache = (i_addr > ONCHIP_MEM_END && (i_rd || i_wr || i_is_atomic)) ? 1'b1 : 1'b0;
+    assign to_cache = ~to_OCM;
     assign o_to_OCM = to_OCM;
     assign o_to_cache = to_cache;
     always @ (*) begin
