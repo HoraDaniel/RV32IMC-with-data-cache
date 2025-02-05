@@ -179,7 +179,7 @@ module core#(
 	wire exe_rd_to_cache;
 	wire [3:0] exe_dm_write_to_cache;
 	
-	wire [`DATAMEM_BITS-3:0] exe_addr_to_OCMinterface;
+	wire [`DATAMEM_BITS-1:0] exe_addr_to_OCMinterface;
 	wire [`WORD_WIDTH-1:0] exe_data_to_OCMinterface;
 	wire exe_wr_to_OCMinterface;
 	wire exe_rd_to_OCMinterface;
@@ -216,6 +216,7 @@ module core#(
 	wire [2:0] mem_sel_data;				// For WB stage
 
 	// MEM Stage Datapath Signals
+	wire mem_to_OCM;
 	wire [`WORD_WIDTH-1:0] mem_DATAMEMout;	// Output of DATAMEM
 	wire [`WORD_WIDTH-1:0] mem_OCMout;
 	wire [`WORD_WIDTH-1:0] mem_CACHEout;
@@ -675,7 +676,7 @@ module core#(
 
 		// Outputs
 		.ALU_op(id_base_ALU_op),
-		.atomic_op(),
+		.atomic_op(id_atomic_op),
 		.div_valid(id_div_valid),
 		.div_op(id_div_op),
 		.sel_opA(id_base_sel_opA),
@@ -926,7 +927,8 @@ module core#(
 		.exe_dm_write(exe_dm_write),		.mem_dm_write(mem_dm_write),
 		.exe_wr_en(exe_wr_en),				.mem_wr_en(mem_wr_en),
 		.exe_dm_select(exe_dm_select),		.mem_dm_select(mem_dm_select),
-		.exe_sel_data(exe_sel_data),		.mem_sel_data(mem_sel_data)
+		.exe_sel_data(exe_sel_data),		.mem_sel_data(mem_sel_data),
+		.exe_to_OCM(exe_to_OCM),            .mem_to_OCM(mem_to_OCM)
 	);
 
 
@@ -1020,8 +1022,8 @@ module core#(
             .o_stall(cache_stall)    
         
     );
-    
-    assign mem_DATAMEMout = (exe_to_OCM) ? mem_OCMout : mem_CACHEout;
+
+    assign mem_DATAMEMout = (mem_to_OCM) ? mem_OCMout : mem_CACHEout;
     
 	loadblock LOADBLOCK(
 		.data(mem_DATAMEMout),

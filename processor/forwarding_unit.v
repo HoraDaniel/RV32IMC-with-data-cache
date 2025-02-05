@@ -112,7 +112,7 @@ module forwarding_unit(
     // A: NOT lui/auipc/jal
     wire base_use_A = !(exe_opcode == `OPC_LUI || exe_opcode == `OPC_AUIPC || exe_opcode == `OPC_JAL);			// if inst uses operand A
     // B: conditions for A + r-type/b-type/store
-    wire base_use_B = base_use_A && (exe_opcode == `OPC_RTYPE || exe_opcode == `OPC_BTYPE || exe_opcode == `OPC_STYPE);		// if inst uses operand B
+    wire base_use_B = base_use_A && (exe_opcode == `OPC_ATOMIC || exe_opcode == `OPC_RTYPE || exe_opcode == `OPC_BTYPE || exe_opcode == `OPC_STYPE);		// if inst uses operand B
     // compressed:
     // check if use_A/use_B is nonzero
     wire fwd_A = exe_is_comp ? exe_comp_use_A : base_use_A;

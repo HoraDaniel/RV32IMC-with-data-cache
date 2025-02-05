@@ -85,5 +85,16 @@ instruction_dict= {
     'C.SWSP':   {'args':2,  'syntax':'r-i',     'i_width':6,    'format':'CI',  'opcode':2,     'funct3':6,                 'imm':'uimm',       'comp_reg':False,   'expansion_method':'times_4(x2)',	'expansion':'sw rs2, offset[7:2](x2)',  'equivalent':'sw'},
 
     # Interrupts
-    'URET':     {'args':0,  'syntax':'none',                    'format':'N',   'opcode':2097267}
+    'URET':     {'args':0,  'syntax':'none',                    'format':'N',   'opcode':2097267},
+
+    # Atomics
+    'AMOSWAP.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 8},
+    'AMOADD.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 0},
+    'AMOAND.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 12},
+    'AMOOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 10},
+    'AMOXOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 4},
+    'AMOMAX.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 20},
+    'AMOMIN.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 16}
+
+
 }

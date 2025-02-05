@@ -159,14 +159,13 @@ module controller1(
     // 0 if DIV, 1 if DIVU, 2 if REM, 3 (REMU) by 'default'
     
     
-    assign atomic_op =  (opcode == `OPC_ATOMIC && funct7 == 7'h04)? `ATOMIC_SWAP     :
-                        (opcode == `OPC_ATOMIC && funct7 == 7'h00)? `ATOMIC_ADD      :
-                        (opcode == `OPC_ATOMIC && funct7 == 7'h10) ? `ATOMIC_XOR     :
-                        (opcode == `OPC_ATOMIC && funct7 == 7'h30) ?  `ATOMIC_AND    :
-                        (opcode == `OPC_ATOMIC && funct7 == 7'h40)  ? `ATOMIC_MIN    :
-                         (opcode == `OPC_ATOMIC && funct7 == 7'h50)  ? `ATOMIC_MAX   :
-                         (opcode == `OPC_ATOMIC && funct7 == 7'h60)  ? `ATOMIC_MINU  :
-                         (opcode == `OPC_ATOMIC && funct7 == 7'h70)  ? `ATOMIC_MAXU  : 
+    assign atomic_op =  (opcode == `OPC_ATOMIC && funct7 == 7'd08)? `ATOMIC_SWAP     :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'd00)? `ATOMIC_ADD      :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'd4) ? `ATOMIC_XOR     :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'd12) ?  `ATOMIC_AND    :
+                        (opcode == `OPC_ATOMIC && funct7 == 7'd16)  ? `ATOMIC_MIN    :
+                         (opcode == `OPC_ATOMIC && funct7 == 7'd20)  ? `ATOMIC_MAX   :
+
                          4'd0;   
     // atomic_op
     // aq and rl not set

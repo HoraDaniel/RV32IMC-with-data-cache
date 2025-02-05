@@ -20,7 +20,7 @@ module tb_core();
     wire core_1_grant;
     wire core_1_request;
     wire [`WORD_WIDTH-1:0] core_1_data_to_OCM;
-    wire [`DATAMEM_BITS-3:0] core_1_addr_to_OCM;
+    wire [`DATAMEM_BITS-1:0] core_1_addr_to_OCM;
     wire [3:0] core_1_dm_write_to_OCM;
     wire core_1_done;
     wire [`WORD_WIDTH-1:0] core_1_data_from_OCM;

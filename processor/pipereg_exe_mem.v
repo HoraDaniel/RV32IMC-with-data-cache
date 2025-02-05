@@ -53,7 +53,10 @@ module pipereg_exe_mem(
 	output reg [2:0] mem_dm_select,
 
 	input [2:0] exe_sel_data,
-	output reg [2:0] mem_sel_data
+	output reg [2:0] mem_sel_data,
+	
+	input exe_to_OCM,
+	output reg mem_to_OCM
 );
 	
 	initial begin
@@ -99,6 +102,7 @@ module pipereg_exe_mem(
 			mem_wr_en <= exe_wr_en;
 			mem_dm_select <= exe_dm_select;
 			mem_sel_data <= exe_sel_data;
+			mem_to_OCM <= exe_to_OCM;
 		end
 	end
 
