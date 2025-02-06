@@ -1,0 +1,35 @@
+    # Load memory addresses into registers
+    li t0, 0x000      # Lock address
+    li t1, 0x004      # Counter address
+    li t2, 0x008      # Limit address
+
+    lw t5, 0(t2)      # Load limit value from 0x008
+
+lock:
+    # Try to acquire the lock using AMOSWAP
+    li t3, 1          # Lock value (1 means locked)
+    amoswap.w.aq t3, t3, (t0)  # Atomically swap and read old lock value
+    bne t3, zero, lock  # If nonzero, another core holds the lock, retry
+
+    # Critical Section: Read, Increment, and Write Counter
+    lw t4, 0(t1)      # Load counter from 0x004
+    bge t4, t5, unlock # If counter >= limit, unlock and exit
+
+    addi t4, t4, 1    # Increment counter
+    sw t4, 0(t1)      # Store updated counter
+
+unlock:
+    sw zero, 0(t0)    # Release lock (write 0 to lock address)
+    j lock            # Repeat
+
+exit:
+    nop            # 10 consecutive NOPs
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop

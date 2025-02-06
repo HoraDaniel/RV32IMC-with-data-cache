@@ -988,7 +988,7 @@ module core#(
     // The atomic module also serves as the OCM interface
     ATOMIC_MODULE#(.ADDR_BITS(`DATAMEM_BITS))
         ATOMIC_ALU(
-            .clk(mem_clk), .nrst(nrst),
+            .clk(CLK_BUF), .nrst(nrst), // oh n
             .i_wr(exe_wr_to_OCMinterface), .i_rd(exe_rd_to_OCMinterface),
             .i_is_atomic(exe_is_atomic),
             .i_data_from_core(exe_data_to_OCMinterface),

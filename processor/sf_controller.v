@@ -247,6 +247,7 @@ module sf_controller(
     assign id_stall = ((load_hazard  && ~mem_prev_flush) || exe_jalr_hazard || mem_jalr_hazard || div_running || mul_stall || cache_stall || ocm_stall);
     wire exe_stall = ((load_hazard  && ~mem_prev_flush) || mem_jalr_hazard || div_running || mul_stall || cache_stall  ||ocm_stall);					
 
+
     // Flushes/Resets
     assign if_flush = ISR_PC_flush;
     assign id_flush = ISR_pipe_flush || jump_flush || branch_flush;
@@ -272,8 +273,8 @@ module sf_controller(
     assign if_clk_en = shut_down || (~(if_stall || (loop_jump && ~ISR_pipe_flush)) && nrst);
     assign id_clk_en = shut_down || (~(id_stall || (loop_jump && ~ISR_pipe_flush)) && nrst);
     assign exe_clk_en = shut_down || (~(exe_stall || (id_prev_flush && ~exe_flush) || (is_nop && ~exe_flush)) && nrst);
-    assign mem_clk_en = shut_down || (~(mem_flush || (exe_prev_flush && ~mem_jalr_hazard)) && nrst);
-    assign wb_clk_en = shut_down || (~mem_prev_flush && nrst);
+    assign mem_clk_en = ~ocm_stall && (shut_down || (~(mem_flush || (exe_prev_flush && ~mem_jalr_hazard)) && nrst));
+    assign wb_clk_en =  shut_down || (~mem_prev_flush && nrst);
     assign rf_clk_en = shut_down ||  (~wb_prev_flush && wb_wr_en && nrst);
 
 	initial begin

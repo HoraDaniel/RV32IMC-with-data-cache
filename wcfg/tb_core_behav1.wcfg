@@ -11,15 +11,19 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="142.330 ns"></ZoomStartTime>
-      <ZoomEndTime time="291.331 ns"></ZoomEndTime>
-      <Cursor1Time time="270.000 ns"></Cursor1Time>
+      <ZoomStartTime time="198.730 ns"></ZoomStartTime>
+      <ZoomEndTime time="349.131 ns"></ZoomEndTime>
+      <Cursor1Time time="310.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="127"></NameColumnWidth>
-      <ValueColumnWidth column_width="94"></ValueColumnWidth>
+      <ValueColumnWidth column_width="74"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="59" />
+   <WVObjectSize size="61" />
+   <wvobject fp_name="/tb_core/CORE/CLK_BUF" type="logic">
+      <obj_property name="ElementShortName">CLK_BUF</obj_property>
+      <obj_property name="ObjectShortName">CLK_BUF</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_core/CORE/nrst" type="logic">
       <obj_property name="ElementShortName">nrst</obj_property>
       <obj_property name="ObjectShortName">nrst</obj_property>
@@ -133,6 +137,7 @@
    <wvobject fp_name="group197" type="group">
       <obj_property name="label">SF Controller</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/branch_flush" type="logic">
          <obj_property name="ElementShortName">branch_flush</obj_property>
          <obj_property name="ObjectShortName">branch_flush</obj_property>
@@ -305,6 +310,7 @@
       <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="label">Regfile</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="group166" type="group">
       <obj_property name="label">Control unit output</obj_property>
@@ -550,7 +556,6 @@
    <wvobject fp_name="group797" type="group">
       <obj_property name="label">ATOMIC</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_atomic_op" type="array">
          <obj_property name="ElementShortName">i_atomic_op[3:0]</obj_property>
          <obj_property name="ObjectShortName">i_atomic_op[3:0]</obj_property>
@@ -615,11 +620,14 @@
          <obj_property name="ElementShortName">i_is_atomic</obj_property>
          <obj_property name="ObjectShortName">i_is_atomic</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/state" type="array">
+         <obj_property name="ElementShortName">state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">state[1:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group363" type="group">
       <obj_property name="label">OCM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -652,9 +660,33 @@
          <obj_property name="ElementShortName">i_req_core_1</obj_property>
          <obj_property name="ObjectShortName">i_req_core_1</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/i_dm_write_core_1" type="array">
+         <obj_property name="ElementShortName">i_dm_write_core_1[3:0]</obj_property>
+         <obj_property name="ObjectShortName">i_dm_write_core_1[3:0]</obj_property>
+      </wvobject>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/bram/ram_block[0]" type="array">
          <obj_property name="ElementShortName">[0][31:0]</obj_property>
          <obj_property name="ObjectShortName">[0][31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/bram/ram_block[1]" type="array">
+         <obj_property name="ElementShortName">[1][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[1][31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/bram/ram_block[2]" type="array">
+         <obj_property name="ElementShortName">[2][31:0]</obj_property>
+         <obj_property name="ObjectShortName">[2][31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group414" type="group">
+      <obj_property name="label">CACHE</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_to_cache" type="logic">
+         <obj_property name="ElementShortName">o_to_cache</obj_property>
+         <obj_property name="ObjectShortName">o_to_cache</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_addr_to_cache" type="array">
+         <obj_property name="ElementShortName">o_addr_to_cache[13:0]</obj_property>
+         <obj_property name="ObjectShortName">o_addr_to_cache[13:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group1387" type="group">
@@ -1257,6 +1289,10 @@
       <obj_property name="label">---</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_core/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_core/CORE/if_clk" type="logic">
       <obj_property name="ElementShortName">if_clk</obj_property>
       <obj_property name="ObjectShortName">if_clk</obj_property>
@@ -1269,17 +1305,13 @@
       <obj_property name="ElementShortName">exe_clk</obj_property>
       <obj_property name="ObjectShortName">exe_clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_core/CORE/mem_clk_en" type="logic">
-      <obj_property name="ElementShortName">mem_clk_en</obj_property>
-      <obj_property name="ObjectShortName">mem_clk_en</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_core/CORE/mem_clk" type="logic">
       <obj_property name="ElementShortName">mem_clk</obj_property>
       <obj_property name="ObjectShortName">mem_clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_core/CLK" type="logic">
-      <obj_property name="ElementShortName">CLK</obj_property>
-      <obj_property name="ObjectShortName">CLK</obj_property>
+   <wvobject fp_name="/tb_core/CORE/wb_clk" type="logic">
+      <obj_property name="ElementShortName">wb_clk</obj_property>
+      <obj_property name="ObjectShortName">wb_clk</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/if_inst" type="array">
       <obj_property name="ElementShortName">if_inst[31:0]</obj_property>
