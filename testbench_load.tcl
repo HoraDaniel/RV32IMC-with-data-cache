@@ -1,4 +1,4 @@
-set SRCDIR F:/pipelined-RV32IMC/wcfg
+set SRCDIR C:/Users/Scully/RV32IMC-with-data-cache/wcfg
 cd $SRCDIR
 
 current_fileset

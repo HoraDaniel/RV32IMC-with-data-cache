@@ -1,5 +1,5 @@
 # Set Current Directory to point to Github Repo directory (where project_run.tcl should be located)
-set SRCDIR F:/pipelined-RV32IMC
+set SRCDIR C:/Users/Scully/RV32IMC-with-data-cache
 
 cd $SRCDIR
 

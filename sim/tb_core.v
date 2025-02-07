@@ -16,6 +16,8 @@ module tb_core();
 
 	reg [`WORD_WIDTH-1:0] last_inst;
     
+    reg [`DATAMEM_BITS-1:0] addr_tb;
+    wire [31:0] out_tb;
     
     wire core_1_grant;
     wire core_1_request;
@@ -56,7 +58,10 @@ module tb_core();
             .i_data_core_1(core_1_data_to_OCM),
             .i_dm_write_core_1(core_1_dm_write_to_OCM),
             .o_data_core_1(core_1_data_from_OCM),
-            .i_addr_1(core_1_addr_to_OCM)
+            .i_addr_1(core_1_addr_to_OCM),
+            
+            .addr_tb(addr_tb),
+            .out_tb(out_tb)
         );
         
 	answerkey AK();
@@ -112,6 +117,8 @@ module tb_core();
 		con_write = 0;
 		con_addr = 10'h0;
 		con_in = 0;
+		
+		addr_tb = 0;
 
 		done = 0;
 		check = 0;
@@ -387,16 +394,16 @@ module tb_core();
 
 	always@(negedge CLK) begin
 		if(done) begin	
-			if(con_out == AK.memory[con_addr]) begin
+			if(out_tb == AK.memory[addr_tb]) begin
 				//$display("0x%3X\t0x%X\t0x%X\tPass", con_addr, con_out, AK.memory[con_addr]);
 				pass = pass + 1;
 			end else begin
-				$display("0x%3X\t0x%X\t0x%X\tFail--------------------", con_addr, con_out, AK.memory[con_addr]);
+				$display("0x%3X\t0x%X\t0x%X\tFail--------------------", addr_tb, out_tb, AK.memory[addr_tb]);
 			end
 
 			total_test_cases = total_test_cases + 1;
-			if(con_addr == max_data_addr) print_metrics = 1;
-			con_addr = con_addr + 1;
+			if(addr_tb == max_data_addr) print_metrics = 1;
+			addr_tb = addr_tb + 1;
 		end
 	end
 

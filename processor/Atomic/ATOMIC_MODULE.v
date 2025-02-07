@@ -41,7 +41,7 @@ module ATOMIC_MODULE
     input [31:0] i_data_from_OCM,
     input [ADDR_BITS-1:0] i_addr,
     input [3:0] i_dm_write,
-    input [4:0] i_atomic_op,
+    input [3:0] i_atomic_op,
     input i_grant,
     
     input [31:0] i_opB,                    // RS2 if Atomic
@@ -58,7 +58,9 @@ module ATOMIC_MODULE
     
     reg [31:0] res;
     reg [31:0] temp;
-    
+    wire initial_stall;
+    assign initial_stall = (i_is_atomic || i_rd || i_wr) && !i_grant;
+    reg r_stall;
     
     // FSM of the module.
     // If instruction is atomic, stall the IF, ID, and EXE stage for 2 cycles (load, modify and store)
@@ -75,17 +77,20 @@ module ATOMIC_MODULE
     
     initial begin
         state <= S_IDLE;
+        r_stall <= 0;
     end
     
     always @ (posedge clk) begin
         if (!nrst) begin
             state <= S_IDLE;
             temp <= 0;
+            r_stall <= 0;
             res <= 0;
         end else begin
             case (state)
                 S_IDLE: begin
-                    if (i_is_atomic || i_wr || i_rd) state <= S_WAIT;
+                    if (i_grant) state <= S_WORK;
+                    else state <= S_IDLE;
                 end 
                 
                 S_WAIT: begin
@@ -108,7 +113,8 @@ module ATOMIC_MODULE
                 temp <= i_data_from_OCM;
             end
             
-            
+            if ((i_is_atomic || i_rd || i_wr) && !i_grant) r_stall <= 1;
+            else r_stall <= 0;
             
         end
         
@@ -137,9 +143,8 @@ module ATOMIC_MODULE
     assign o_done = (state == S_DONE) ? 1'b1 : 1'b0;
     assign o_request = (i_is_atomic || i_wr || i_rd);
     assign o_data_to_OCM = (i_is_atomic) ? res : i_data_from_core;
-    assign o_dm_write = (state == S_DONE && i_is_atomic) ? 4'b1111 : i_dm_write;
-    assign o_data_to_WB = (state == S_DONE && i_is_atomic) ? temp : 
-                (state == S_DONE && !i_is_atomic) ? i_data_from_OCM : 0;
+    assign o_dm_write = (state == S_WORK && i_is_atomic) ? 4'b1111 : i_dm_write;
+    assign o_data_to_WB = (i_is_atomic) ? temp : i_data_from_OCM;
     assign o_addr = i_addr;
-    assign o_stall_atomic = (state == S_WORK || state == S_WAIT) ? 1'b1 : 1'b0;
+    assign o_stall_atomic = r_stall || initial_stall;
 endmodule

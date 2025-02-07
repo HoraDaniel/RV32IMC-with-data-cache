@@ -47,7 +47,8 @@ module loadblock(
 	
 	// Original implementation was big-endian [b+3, b+2, b+1, b]
     // Changed to little-endian to accomodate RISC-V GNU Assembler Output [b, b+1, b+2, b+3]
-
+    // Nope, changed it to big endian
+    
 	parameter LB = 3'd0;
 	parameter LH = 3'd1;
 	parameter LW = 3'd2;
@@ -72,17 +73,17 @@ module loadblock(
 				endcase
 			LH:
 				case(byte_offset)
-					2'd2: loaddata = { {16{data[7]}}, data[7:0], data[15:8] };
-					2'd3: loaddata = { {16{data[7]}}, data[7:0], data[15:8] };
-					default: loaddata = { {16{data[23]}}, data[23:16], data[31:24] };
+					2'd2: loaddata = { {16{data[15]}}, data[15:8], data[7:0]  };
+					2'd3: loaddata = { {16{data[15]}}, data[15:8], data[7:0] };
+					default: loaddata = { {16{data[31]}} , data[31:24], data[23:16]};
 				endcase
 			LHU:
 				case(byte_offset)
-					2'd2: loaddata = { 16'd0, data[7:0], data[15:8] };
-					2'd3: loaddata = { 16'd0, data[7:0], data[15:8] };
-					default: loaddata = { 16'd0, data[23:16], data[31:24] };
+					2'd2: loaddata = { 16'd0, data[15:8], data[7:0]  };
+					2'd3: loaddata = { 16'd0, data[15:8], data[7:0]  };
+					default: loaddata = { 16'd0, data[31:24], data[23:16]  };
 				endcase
-			default: loaddata = {data[7:0], data[15:8], data[23:16], data[31:24]};
+			default: loaddata = {data[31:24], data[23:16], data[15:8], data[7:0]};
 		endcase
 	end
 	

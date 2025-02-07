@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="198.730 ns"></ZoomStartTime>
-      <ZoomEndTime time="349.131 ns"></ZoomEndTime>
+      <ZoomStartTime time="204.306 ns"></ZoomStartTime>
+      <ZoomEndTime time="394.924 ns"></ZoomEndTime>
       <Cursor1Time time="310.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="127"></NameColumnWidth>
-      <ValueColumnWidth column_width="74"></ValueColumnWidth>
+      <NameColumnWidth column_width="114"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="61" />
    <wvobject fp_name="/tb_core/CORE/CLK_BUF" type="logic">
@@ -137,7 +137,6 @@
    <wvobject fp_name="group197" type="group">
       <obj_property name="label">SF Controller</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/branch_flush" type="logic">
          <obj_property name="ElementShortName">branch_flush</obj_property>
          <obj_property name="ObjectShortName">branch_flush</obj_property>
@@ -556,6 +555,7 @@
    <wvobject fp_name="group797" type="group">
       <obj_property name="label">ATOMIC</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_atomic_op" type="array">
          <obj_property name="ElementShortName">i_atomic_op[3:0]</obj_property>
          <obj_property name="ObjectShortName">i_atomic_op[3:0]</obj_property>
@@ -568,6 +568,10 @@
          <obj_property name="ElementShortName">o_dm_write_to_OCM[3:0]</obj_property>
          <obj_property name="ObjectShortName">o_dm_write_to_OCM[3:0]</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/o_grant_core_1" type="logic">
+         <obj_property name="ElementShortName">o_grant_core_1</obj_property>
+         <obj_property name="ObjectShortName">o_grant_core_1</obj_property>
+      </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_atomic_op" type="array">
          <obj_property name="ElementShortName">i_atomic_op[3:0]</obj_property>
          <obj_property name="ObjectShortName">i_atomic_op[3:0]</obj_property>
@@ -575,6 +579,10 @@
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_opB" type="array">
          <obj_property name="ElementShortName">i_opB[31:0]</obj_property>
          <obj_property name="ObjectShortName">i_opB[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_dm_write" type="array">
+         <obj_property name="ElementShortName">o_dm_write[3:0]</obj_property>
+         <obj_property name="ObjectShortName">o_dm_write[3:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/temp" type="array">
          <obj_property name="ElementShortName">temp[31:0]</obj_property>
@@ -587,6 +595,10 @@
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/res" type="array">
          <obj_property name="ElementShortName">res[31:0]</obj_property>
          <obj_property name="ObjectShortName">res[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_data_to_OCM" type="array">
+         <obj_property name="ElementShortName">o_data_to_OCM[31:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data_to_OCM[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_data_to_WB" type="array">
          <obj_property name="ElementShortName">o_data_to_WB[31:0]</obj_property>
@@ -628,6 +640,7 @@
    <wvobject fp_name="group363" type="group">
       <obj_property name="label">OCM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -1328,6 +1341,7 @@
    <wvobject fp_name="/tb_core/CORE/id_opcode" type="array">
       <obj_property name="ElementShortName">id_opcode[6:0]</obj_property>
       <obj_property name="ObjectShortName">id_opcode[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/id_rsA" type="array">
       <obj_property name="ElementShortName">id_rsA[4:0]</obj_property>
