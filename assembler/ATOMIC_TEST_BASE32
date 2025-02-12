@@ -1,0 +1,46 @@
+
+    # Load addresses
+    li t0, 0x00
+    li t1, 0x04 
+    li t2, 0x08  
+    li t3, 0x0C   
+    li t4, 0x10
+
+    # Load immediate values
+    li t5, 0XBABABABA # Swap value
+    li t6, 0xAAAAAAAA # XOR value
+    li a0, 0x00000001 # Add value
+    li a1, 0x0F0F0F0F # OR value
+    li a2, 0x00000FFF # AND valud
+
+    # AMOSWAP.W: Swap t5 with test_swap
+    #amoswap.w a2, t5, (t0)  # a2 = original (0xA5A5A5A5), test_swap = 0xFFFFFFFF
+lw a2, 0(t0)
+sw t5, 0(t0)
+    # AMOXOR.W: XOR test_xor with 0xAAAAAAAA
+    #amoxor.w a3, t6, (t1)  # a3 = original (0xFFFFFFFF), test_xor = 0x55555555
+lw s0, 0(t1)
+xor a3, s0, t6
+sw a3, 0(t1)
+
+    # AMOADD.W: Add 0x00000001 to test_add1
+    #amoadd.w a4, a0, (t2)  # a4 = original (0x55555555), test_add1 = 0x55555556
+lw s0, 0(t2)
+add a4, s0, a0
+sw a4, 0(t2)
+
+
+    # AMOOR.W: OR test_or with 0x0F0F0F0F
+    #amoor.w a5, a1, (t3)  # a5 = original (0x33333333), test_or = 0x3F3F3F3F
+lw s0, 0(t3)
+or a5, s0, a1
+sw a5, 0(t3)
+
+    # AMOAND.W: Add 0x00000001 to test_add2
+    #amoand.w a6, a2, (t4)  # a6 = original (0x12345678), test_add2 = 0x12345679
+lw s0, 0(t4)
+and a6, s0, a2
+sw a6, 0(t4)
+    # End of test, infinite loop
+li s1, 100
+sw s1, 4(t4)

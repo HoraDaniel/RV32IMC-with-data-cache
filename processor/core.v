@@ -47,6 +47,8 @@ module core#(
 	output [3:0] dm_write_OCM,
 	output [`WORD_WIDTH-1:0] OCM_in,
 	input [`WORD_WIDTH-1:0] OCM_out,
+	input OCM_valid_data,
+	input OCM_valid_write,
 	output OCM_done
 );
 	
@@ -189,7 +191,7 @@ module core#(
 	wire [`WORD_WIDTH-1:0] exe_data_to_cache;
 	wire exe_wr_to_cache;
 	wire exe_rd_to_cache;
-	wire exe_dm_write_to_cache;
+
 	
     wire exe_to_OCM;
     wire exe_to_cache;
@@ -211,6 +213,16 @@ module core#(
 
 	// Control signals
 	wire [3:0] mem_dm_write;				// For MEM stage
+	wire mem_is_atomic;
+	wire [31:0] mem_opB; // Atomics
+	wire [3:0] mem_atomic_op;
+	wire mem_is_ltype;
+	wire mem_is_stype;
+    wire [`DATAMEM_BITS-1:0] mem_addr_to_OCMinterface;
+	wire [`WORD_WIDTH-1:0] mem_data_to_OCMinterface;
+	wire mem_wr_to_OCMinterface;
+	wire mem_rd_to_OCMinterface;
+	wire mem_dm_write_to_OCMinterface;
 	wire mem_wr_en;							// For WB stage
 	wire [2:0] mem_dm_select;				// For MEM stage
 	wire [2:0] mem_sel_data;				// For WB stage
@@ -928,7 +940,12 @@ module core#(
 		.exe_wr_en(exe_wr_en),				.mem_wr_en(mem_wr_en),
 		.exe_dm_select(exe_dm_select),		.mem_dm_select(mem_dm_select),
 		.exe_sel_data(exe_sel_data),		.mem_sel_data(mem_sel_data),
-		.exe_to_OCM(exe_to_OCM),            .mem_to_OCM(mem_to_OCM)
+		.exe_is_ltype(exe_is_ltype),        .mem_is_ltype(mem_is_ltype),
+		.exe_is_stype(exe_is_stype),        .mem_is_stype(mem_is_stype),
+		.exe_is_atomic(exe_is_atomic),      .mem_is_atomic(mem_is_atomic),
+		.exe_to_OCM(exe_to_OCM),            .mem_to_OCM(mem_to_OCM),
+		.exe_opB(opB),                      .mem_opB(mem_opB),
+		.exe_atomic_op(exe_atomic_op),                     .mem_atomic_op(mem_atomic_op)
 	);
 
 
@@ -956,24 +973,27 @@ module core#(
 		
 	);
     */
+    // AS of February 8, 2025
+    // Changed the signals;
+    // to MEM stage
     
     MEM_ADDR_ROUTE#(.ADDR_BITS(`DATAMEM_BITS))
         MEM_ADDR_ROUTE(
-            .i_addr(exe_ALUout[`DATAMEM_BITS-1:0]), 
-            .i_is_atomic(exe_is_atomic),
-            .i_data(exe_storedata), 
-            .i_dm_write(exe_dm_write), 
-            .i_wr(exe_is_stype), 
-            .i_rd(exe_is_ltype),
+            .i_addr(mem_ALUout[`DATAMEM_BITS-1:0]), 
+            .i_is_atomic(mem_is_atomic),
+            .i_data(mem_storedata), 
+            .i_dm_write(mem_dm_write), 
+            .i_wr(mem_is_stype), 
+            .i_rd(mem_is_ltype),
             
-            .o_to_OCM(exe_to_OCM),
+            .o_to_OCM(mem_to_OCM),
             .o_to_cache(exe_to_cache),
             
-            .o_addr_to_OCM(exe_addr_to_OCMinterface),
-            .o_dm_write_to_OCM(exe_dm_write_to_OCMinterface),
-            .o_wr_to_OCM(exe_wr_to_OCMinterface),
-            .o_rd_to_OCM(exe_rd_to_OCMinterface),
-            .o_data_to_OCM(exe_data_to_OCMinterface),
+            .o_addr_to_OCM(mem_addr_to_OCMinterface),
+            .o_dm_write_to_OCM(mem_dm_write_to_OCMinterface),
+            .o_wr_to_OCM(mem_wr_to_OCMinterface),
+            .o_rd_to_OCM(mem_rd_to_OCMinterface),
+            .o_data_to_OCM(mem_data_to_OCMinterface),
             
             .o_addr_to_cache(exe_addr_to_cache),
             .o_dm_write_to_cache(exe_dm_write_to_cache),
@@ -989,15 +1009,17 @@ module core#(
     ATOMIC_MODULE#(.ADDR_BITS(`DATAMEM_BITS))
         ATOMIC_ALU(
             .clk(CLK_BUF), .nrst(nrst), // oh n
-            .i_wr(exe_wr_to_OCMinterface), .i_rd(exe_rd_to_OCMinterface),
-            .i_is_atomic(exe_is_atomic),
-            .i_data_from_core(exe_data_to_OCMinterface),
+            .i_wr(mem_wr_to_OCMinterface), .i_rd(mem_rd_to_OCMinterface),
+            .i_is_atomic(mem_is_atomic),
+            .i_data_from_core(mem_data_to_OCMinterface),
             .i_data_from_OCM(OCM_out),
-            .i_addr(exe_addr_to_OCMinterface),
-            .i_dm_write(exe_dm_write),
-            .i_atomic_op(exe_atomic_op),
-            .i_opB(opB),
+            .i_addr(mem_addr_to_OCMinterface),
+            .i_dm_write(mem_dm_write),
+            .i_atomic_op(mem_atomic_op),
+            .i_opB(mem_opB),
             .i_grant(grant),
+            .i_data_valid(OCM_valid_data),
+            .i_data_write_valid(OCM_valid_write),
             
             .o_data_to_OCM(OCM_in),
             .o_addr(OCM_addr),
@@ -1006,6 +1028,7 @@ module core#(
             .o_request(request),
             .o_done(OCM_done),
             .o_stall_atomic(ocm_stall)
+            
         );
         
     

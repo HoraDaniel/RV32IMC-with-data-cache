@@ -132,6 +132,7 @@ module pipereg_id_exe(
 		exe_imm <= 0;
 		exe_rd <= 0;
 		exe_PC <= 0;
+		exe_is_atomic <= 0;
 
 		// Control signals
 		exe_ALU_op <= 0;
@@ -149,6 +150,7 @@ module pipereg_id_exe(
 		exe_is_comp <= 0;
 		exe_rs1 <= 0;
 		exe_rs2 <= 0;
+		exe_atomic_op <= 0;
 	end
 
 	always@(posedge clk) begin
@@ -166,6 +168,8 @@ module pipereg_id_exe(
 
 			// Control signals
 			exe_ALU_op <= 0;
+			exe_is_atomic <= 0;
+			exe_atomic_op <= 0;
 
 			exe_c_btype <= 0;
 			exe_sel_opBR <= 0;

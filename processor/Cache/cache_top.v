@@ -175,6 +175,10 @@ module cache_top
             .o_write_signal(weB)
         );
      
+        // TO DO :
+        // Change from Write back to Write Through
+        // How would we do that
+        
         
      // Instantiate the BRAM
      // for now

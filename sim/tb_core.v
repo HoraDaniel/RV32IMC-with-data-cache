@@ -27,6 +27,8 @@ module tb_core();
     wire core_1_done;
     wire [`WORD_WIDTH-1:0] core_1_data_from_OCM;
     
+    wire OCM_valid_data;
+    wire OCM_valid_write;
 	core CORE(
 		.CLKIP_OUT(CLK),
 		.CLK_BUF(CLK),
@@ -46,7 +48,9 @@ module tb_core();
 		.dm_write_OCM(core_1_dm_write_to_OCM),
 		.OCM_in(core_1_data_to_OCM),
 		.OCM_out(core_1_data_from_OCM),
-		.OCM_done(core_1_done)
+		.OCM_done(core_1_done),
+		.OCM_valid_data(OCM_valid_data),
+		.OCM_valid_write(OCM_valid_write)
 	);
     // On chip memory external to the core
     OCM #(.ADDR_BITS(`DATAMEM_BITS))
@@ -57,11 +61,14 @@ module tb_core();
             .o_grant_core_1(core_1_grant),
             .i_data_core_1(core_1_data_to_OCM),
             .i_dm_write_core_1(core_1_dm_write_to_OCM),
-            .o_data_core_1(core_1_data_from_OCM),
+            //.o_data_core_1(core_1_data_from_OCM),
             .i_addr_1(core_1_addr_to_OCM),
             
             .addr_tb(addr_tb),
-            .out_tb(out_tb)
+            .out_tb(out_tb),
+            .o_data(core_1_data_from_OCM),
+            .valid_data(OCM_valid_data),
+            .valid_write_data(OCM_valid_write)
         );
         
 	answerkey AK();
@@ -199,7 +206,7 @@ module tb_core();
 	end
 	// This controlls the done flag
 	always@(posedge CLK) begin
-		if(check == 50 || consecutive_nops == 10) done = 1;
+		if(check == 50 || consecutive_nops == 20) done = 1;
 	end
 
 	// Tracking how many clock cycles it takes to execute the program
@@ -351,7 +358,7 @@ module tb_core();
 		if(!nrst)
 			max_data_addr <= 0;
 		else if(!done) 
-			if((CORE.exe_is_stype && |CORE.exe_dm_write && CORE.exe_ALUout[12:2] > max_data_addr) && (CORE.exe_ALUout[12:2] < 11'h400))
+			if(( CORE.exe_is_stype && |CORE.exe_dm_write && CORE.exe_ALUout[12:2] > max_data_addr) && (CORE.exe_ALUout[12:2] < 11'h400))
 				max_data_addr <= CORE.exe_ALUout[12:2];
 	end
 

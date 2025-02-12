@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="204.306 ns"></ZoomStartTime>
-      <ZoomEndTime time="394.924 ns"></ZoomEndTime>
-      <Cursor1Time time="310.000 ns"></Cursor1Time>
+      <ZoomStartTime time="502.828 ns"></ZoomStartTime>
+      <ZoomEndTime time="786.297 ns"></ZoomEndTime>
+      <Cursor1Time time="980.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="114"></NameColumnWidth>
-      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+      <NameColumnWidth column_width="100"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="61" />
+   <WVObjectSize size="62" />
    <wvobject fp_name="/tb_core/CORE/CLK_BUF" type="logic">
       <obj_property name="ElementShortName">CLK_BUF</obj_property>
       <obj_property name="ObjectShortName">CLK_BUF</obj_property>
@@ -137,6 +137,7 @@
    <wvobject fp_name="group197" type="group">
       <obj_property name="label">SF Controller</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/CORE/SF_CONTROLLER/branch_flush" type="logic">
          <obj_property name="ElementShortName">branch_flush</obj_property>
          <obj_property name="ObjectShortName">branch_flush</obj_property>
@@ -556,21 +557,9 @@
       <obj_property name="label">ATOMIC</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_atomic_op" type="array">
-         <obj_property name="ElementShortName">i_atomic_op[3:0]</obj_property>
-         <obj_property name="ObjectShortName">i_atomic_op[3:0]</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_addr_to_OCM" type="array">
          <obj_property name="ElementShortName">o_addr_to_OCM[13:0]</obj_property>
          <obj_property name="ObjectShortName">o_addr_to_OCM[13:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_dm_write_to_OCM" type="array">
-         <obj_property name="ElementShortName">o_dm_write_to_OCM[3:0]</obj_property>
-         <obj_property name="ObjectShortName">o_dm_write_to_OCM[3:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/o_grant_core_1" type="logic">
-         <obj_property name="ElementShortName">o_grant_core_1</obj_property>
-         <obj_property name="ObjectShortName">o_grant_core_1</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_atomic_op" type="array">
          <obj_property name="ElementShortName">i_atomic_op[3:0]</obj_property>
@@ -580,21 +569,41 @@
          <obj_property name="ElementShortName">i_opB[31:0]</obj_property>
          <obj_property name="ObjectShortName">i_opB[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_dm_write" type="array">
-         <obj_property name="ElementShortName">o_dm_write[3:0]</obj_property>
-         <obj_property name="ObjectShortName">o_dm_write[3:0]</obj_property>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_data_from_OCM" type="array">
+         <obj_property name="ElementShortName">i_data_from_OCM[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_from_OCM[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_is_atomic" type="logic">
+         <obj_property name="ElementShortName">i_is_atomic</obj_property>
+         <obj_property name="ObjectShortName">i_is_atomic</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_wr" type="logic">
+         <obj_property name="ElementShortName">i_wr</obj_property>
+         <obj_property name="ObjectShortName">i_wr</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_rd" type="logic">
+         <obj_property name="ElementShortName">i_rd</obj_property>
+         <obj_property name="ObjectShortName">i_rd</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_grant" type="logic">
+         <obj_property name="ElementShortName">i_grant</obj_property>
+         <obj_property name="ObjectShortName">i_grant</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/valid_data" type="logic">
+         <obj_property name="ElementShortName">valid_data</obj_property>
+         <obj_property name="ObjectShortName">valid_data</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/temp" type="array">
          <obj_property name="ElementShortName">temp[31:0]</obj_property>
          <obj_property name="ObjectShortName">temp[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_data_from_OCM" type="array">
-         <obj_property name="ElementShortName">i_data_from_OCM[31:0]</obj_property>
-         <obj_property name="ObjectShortName">i_data_from_OCM[31:0]</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/res" type="array">
          <obj_property name="ElementShortName">res[31:0]</obj_property>
          <obj_property name="ObjectShortName">res[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_dm_write" type="array">
+         <obj_property name="ElementShortName">o_dm_write[3:0]</obj_property>
+         <obj_property name="ObjectShortName">o_dm_write[3:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_data_to_OCM" type="array">
          <obj_property name="ElementShortName">o_data_to_OCM[31:0]</obj_property>
@@ -604,22 +613,6 @@
          <obj_property name="ElementShortName">o_data_to_WB[31:0]</obj_property>
          <obj_property name="ObjectShortName">o_data_to_WB[31:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_rd_to_OCM" type="logic">
-         <obj_property name="ElementShortName">o_rd_to_OCM</obj_property>
-         <obj_property name="ObjectShortName">o_rd_to_OCM</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_wr_to_OCM" type="logic">
-         <obj_property name="ElementShortName">o_wr_to_OCM</obj_property>
-         <obj_property name="ObjectShortName">o_wr_to_OCM</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_to_OCM" type="logic">
-         <obj_property name="ElementShortName">o_to_OCM</obj_property>
-         <obj_property name="ObjectShortName">o_to_OCM</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_request" type="logic">
-         <obj_property name="ElementShortName">o_request</obj_property>
-         <obj_property name="ObjectShortName">o_request</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/o_done" type="logic">
          <obj_property name="ElementShortName">o_done</obj_property>
          <obj_property name="ObjectShortName">o_done</obj_property>
@@ -628,22 +621,21 @@
          <obj_property name="ElementShortName">o_stall_atomic</obj_property>
          <obj_property name="ObjectShortName">o_stall_atomic</obj_property>
       </wvobject>
-      <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/i_is_atomic" type="logic">
-         <obj_property name="ElementShortName">i_is_atomic</obj_property>
-         <obj_property name="ObjectShortName">i_is_atomic</obj_property>
-      </wvobject>
       <wvobject fp_name="/tb_core/CORE/ATOMIC_ALU/state" type="array">
-         <obj_property name="ElementShortName">state[1:0]</obj_property>
-         <obj_property name="ObjectShortName">state[1:0]</obj_property>
+         <obj_property name="ElementShortName">state[3:0]</obj_property>
+         <obj_property name="ObjectShortName">state[3:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group363" type="group">
       <obj_property name="label">OCM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/clk" type="logic">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/current_grant" type="logic">
+         <obj_property name="ElementShortName">current_grant</obj_property>
+         <obj_property name="ObjectShortName">current_grant</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/o_grant_core_1" type="logic">
          <obj_property name="ElementShortName">o_grant_core_1</obj_property>
@@ -660,14 +652,6 @@
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/in_data_bus" type="array">
          <obj_property name="ElementShortName">in_data_bus[31:0]</obj_property>
          <obj_property name="ObjectShortName">in_data_bus[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/out_data_bus" type="array">
-         <obj_property name="ElementShortName">out_data_bus[31:0]</obj_property>
-         <obj_property name="ObjectShortName">out_data_bus[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/o_data_core_1" type="array">
-         <obj_property name="ElementShortName">o_data_core_1[31:0]</obj_property>
-         <obj_property name="ObjectShortName">o_data_core_1[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/i_req_core_1" type="logic">
          <obj_property name="ElementShortName">i_req_core_1</obj_property>
@@ -689,6 +673,10 @@
          <obj_property name="ElementShortName">[2][31:0]</obj_property>
          <obj_property name="ObjectShortName">[2][31:0]</obj_property>
       </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/mem_state" type="array">
+         <obj_property name="ElementShortName">mem_state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_state[1:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group414" type="group">
       <obj_property name="label">CACHE</obj_property>
@@ -700,6 +688,10 @@
       <wvobject fp_name="/tb_core/CORE/MEM_ADDR_ROUTE/o_addr_to_cache" type="array">
          <obj_property name="ElementShortName">o_addr_to_cache[13:0]</obj_property>
          <obj_property name="ObjectShortName">o_addr_to_cache[13:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/tb_core/ON_CHIP_MEMORY/mem_state" type="array">
+         <obj_property name="ElementShortName">mem_state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_state[1:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group1387" type="group">
@@ -1394,6 +1386,12 @@
       <obj_property name="ElementShortName">id_fwdstore[31:0]</obj_property>
       <obj_property name="ObjectShortName">id_fwdstore[31:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_core/CORE/id_atomic_op" type="array">
+      <obj_property name="ElementShortName">id_atomic_op[3:0]</obj_property>
+      <obj_property name="ObjectShortName">id_atomic_op[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_core/CORE/opA" type="array">

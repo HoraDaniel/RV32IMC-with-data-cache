@@ -1,0 +1,52 @@
+# Load Addresses
+li t0, 0x000
+li t1, 0x004
+li t2, 0x008
+li t3, 0x00C
+li t4, 0x010
+
+
+# Load immediate values for tests
+li t5, 0xFFFFFFFF
+li t6, 0xAAAAAAAA
+li a0, 0x00000001
+li a1, 0x0F0F0F0F
+
+
+# AMOSWAP.W: Swap t5 with test_swap
+#amoswap.w a2, t0, t5
+lw a2, 0(t0)
+sw t5, 0(t0)
+
+# AMOXOR.W:
+#amoxor.w a3, t2, t6
+lw s0, 0(t2)
+xor a3, s0, t6
+sw a3, 0(t2)
+
+# AMOADD.W
+#amoadd.w a4, t2, t6
+lw s0, 0(t2)
+add a4, s0, t6
+sw a4, 0(t2)
+
+# AMOOR.W
+#amoor.w a5, t3, a0
+lw s0, 0(rs1)
+or a5, s0, a0
+sw a5, 0(rs1)
+
+
+# AMOADD.W
+#amoadd.w a6, t4, a0
+lw s0, 0(rs1)
+add a6, s0, a0
+sw a6, 0(t4)
+
+
+.section .data
+    test_swap: .word 0xA5A5A5A5  # Initial value for AMOSWAP.W
+    test_xor:  .word 0xFFFFFFFF  # Initial value for AMOXOR.W
+    test_add1: .word 0x55555555  # Initial value for AMOADD.W
+    test_or:   .word 0x33333333  # Initial value for AMOOR.W
+    test_add2: .word 0x12345678  # Initial value for second AMOADD.W

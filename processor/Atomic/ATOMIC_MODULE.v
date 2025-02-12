@@ -43,6 +43,8 @@ module ATOMIC_MODULE
     input [3:0] i_dm_write,
     input [3:0] i_atomic_op,
     input i_grant,
+    input i_data_valid,
+    input i_data_write_valid,
     
     input [31:0] i_opB,                    // RS2 if Atomic
     
@@ -53,69 +55,133 @@ module ATOMIC_MODULE
     output o_request,
    
     output o_done,          
-    output o_stall_atomic
+    output  o_stall_atomic
     );
+    
+    wire initial_stall;
+    reg r_stall;
     
     reg [31:0] res;
     reg [31:0] temp;
-    wire initial_stall;
-    assign initial_stall = (i_is_atomic || i_rd || i_wr) && !i_grant;
-    reg r_stall;
-    
+
+                                
+                                
     // FSM of the module.
-    // If instruction is atomic, stall the IF, ID, and EXE stage for 2 cycles (load, modify and store)
+    // If instruction is atomic, stall the IF, ID, and EXE stage till phases are done
     // State:
-    // 2'd0 S_IDLE
-    // 2'd1 S_WAIT - wait for memory resources to be free
-    // 2'd2 S_WORK - load and modify
-    // 2'd3 S_DONE - store back the results, free the resource, from DONE we can jump back to wait and bypass IDLE
-    reg [1:0] state;
-    localparam S_IDLE = 2'd0;
-    localparam S_WAIT = 2'd1;
-    localparam S_WORK = 2'd2;
-    localparam S_DONE = 2'd3;
+    // 4'd0 S_IDLE - wait for operations and wait for memory resources to be free
+    // 4'd1 S_GRANT - arbitrator gives grant to core; wait for valid signals
+    // 4'd2 S_ATOMIC_VALID_READ - valid data received at ports; wait for valid write after doing atomic operations on data
+    // 4'd3 S_ATOMIC_VALID_WRITE - confirmation that result is written in memory
+    // 4'd4 S_ATOMIC_DONE - atomic operation is done
+    //
+    // 4'd5 S_BASIC_LOAD - if load operation at non-cacheable region, wait for valid data
+    // 4'd6 S_BASIC_STORE - if write operation at non-cacheable region, wait for write confirmation
+    // 4'd7 S_BASIC_LOAD_RESP - basic load is done. valid data available for WB stage
+    // 4'd8 S_BASIC_WRITE_RESP - basic write is done. valid data is written at OCM
+    // 4'd9 S_DONE - load/store operation done. Cleanup. 
+    reg [3:0] state;
+    localparam S_IDLE = 4'd0;
+    localparam S_WAIT = 4'd1;
+    localparam S_GRANT = 4'd2;
+    localparam S_ATOMIC_VALID_READ = 4'd3;
+    localparam S_ATOMIC_VALID_WRITE = 4'd4;
+    localparam S_DONE = 4'd5;
+    
+    localparam S_BASIC_LOAD = 4'd6;
+    localparam S_BASIC_STORE = 4'd7; 
+    localparam S_BASIC_LOAD_RESP = 4'd8; 
+    localparam S_BASIC_WRITE_RESP = 4'd9;
+
     
     initial begin
         state <= S_IDLE;
         r_stall <= 0;
     end
     
-    always @ (posedge clk) begin
+    // I had to change this to negedge clk because I couldn't figure out for the life of me to make this work 
+    // in posedge clk.    
+    always @ (negedge clk) begin
         if (!nrst) begin
             state <= S_IDLE;
-            temp <= 0;
             r_stall <= 0;
+            temp <= 0;
             res <= 0;
         end else begin
             case (state)
                 S_IDLE: begin
-                    if (i_grant) state <= S_WORK;
-                    else state <= S_IDLE;
-                end 
-                
+                    if ( i_is_atomic || i_rd || i_wr) begin
+                        state <= S_WAIT;
+                        r_stall <= 1;
+                    end 
+                    else begin
+                        state <= S_IDLE;
+                    end
+                end
                 S_WAIT: begin
-                    if (i_grant && i_is_atomic) state <= S_WORK;
-                    else if (i_grant && !i_is_atomic) state <= S_DONE;
+                    if (!(i_wr || i_rd || i_is_atomic)) begin
+                        state <= S_IDLE; // go back to idle since we were wrong to enter here
+                        r_stall <= 0;
+                    end
+                    if (( i_is_atomic || i_rd || i_wr) && i_grant) state <= S_GRANT;
+                end
+                S_GRANT: begin
+                    // grant is given, wait for memory to complete the request
+                    if (i_data_valid && i_is_atomic) begin
+                        state <= S_ATOMIC_VALID_READ;
+                        temp <= i_data_from_OCM;
+                    end
+                    else if (i_data_valid && i_rd) begin
+                        state <= S_BASIC_LOAD;
+                        temp <= i_data_from_OCM;
+                    end
                     
+                    else if (i_data_write_valid && i_wr) begin
+                        state <= S_BASIC_STORE;
+                        
+                    end
+                    else state <= S_GRANT;
                 end
                 
-                S_WORK: begin
+                S_ATOMIC_VALID_READ: begin
+                    // do the work and operatin
+                    // wait for valid writes
+                    if (i_data_write_valid && i_is_atomic) begin
+                        state <= S_ATOMIC_VALID_WRITE;
+                    end
+                end
+                
+                S_ATOMIC_VALID_WRITE: begin
                     state <= S_DONE;
+                    //r_stall <= 0;
                 end
                 
                 S_DONE: begin
-                    if (i_is_atomic) state <= S_WAIT; // bypass IDLE state 
-                    else state <= S_IDLE;
+                    //bypass the IDLE if consecutive requests?
+                    /*
+                    if (i_is_atomic || i_wr || i_rd) begin 
+                        state <= S_WAIT;
+                        r_stall <= 1;
+                    end
+                    */
+                    //else begin
+                        state <= S_IDLE;
+                        r_stall <= 0;
+                    //end
+                end
+                
+                S_BASIC_LOAD: begin
+                    //r_stall <= 0;
+                    state <= S_DONE;
+                end
+                
+                S_BASIC_STORE: begin
+                    //r_stall <= 0;
+                    state <= S_DONE;
                 end
             endcase
             
-            if (i_is_atomic && (state == S_WORK)) begin
-                temp <= i_data_from_OCM;
-            end
-            
-            if ((i_is_atomic || i_rd || i_wr) && !i_grant) r_stall <= 1;
-            else r_stall <= 0;
-            
+
         end
         
     end
@@ -140,11 +206,23 @@ module ATOMIC_MODULE
         endcase
     end
     
+    //assign initial_stall = (i_is_atomic || i_rd || i_wr) && !i_grant;
+    
+    
     assign o_done = (state == S_DONE) ? 1'b1 : 1'b0;
     assign o_request = (i_is_atomic || i_wr || i_rd);
     assign o_data_to_OCM = (i_is_atomic) ? res : i_data_from_core;
-    assign o_dm_write = (state == S_WORK && i_is_atomic) ? 4'b1111 : i_dm_write;
-    assign o_data_to_WB = (i_is_atomic) ? temp : i_data_from_OCM;
+    
+    assign o_dm_write = (i_is_atomic) ? 
+                            ( !(state == S_ATOMIC_VALID_READ) ) ? 4'b0000 : 4'b1111
+                         : (i_rd || i_wr) ? i_dm_write : 4'b0000  ;
+    
+    
+    
+    assign o_data_to_WB = (i_is_atomic) ? 
+                            (i_atomic_op == 1) ? temp : res
+                            : temp;
+    
     assign o_addr = i_addr;
-    assign o_stall_atomic = r_stall || initial_stall;
+    assign o_stall_atomic =  r_stall;
 endmodule

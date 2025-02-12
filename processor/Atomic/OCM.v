@@ -39,9 +39,6 @@ module OCM #(
     output [31:0] o_data_core_1,
     input [ADDR_BITS-1:0] i_addr_1,
 
-    input [ADDR_BITS-1:0] addr_tb,
-    output [31:0] out_tb,
-    
     
     // Core 2 signals and data
     input i_req_core_2,
@@ -56,7 +53,8 @@ module OCM #(
     
     );
     
-    
+    wire [31:0] data_in_core_1_little_e = {i_data_core_1[7:0], i_data_core_1[15:8], i_data_core_1[23:16], i_data_core_1[31:24]};
+     wire [31:0] data_in_core_2_little_e = {i_data_core_2[7:0], i_data_core_2[15:8], i_data_core_2[23:16], i_data_core_2[31:24]};
     
     // Implement an arbitration module
     // Signals
@@ -74,8 +72,6 @@ module OCM #(
         current_grant <= 0;
     
     end
-    
-    
     
     always @ (posedge clk) begin
         if (!nrst) begin
@@ -138,18 +134,11 @@ module OCM #(
     wire [31:0] out_data_bus;
     wire [3:0] dm_wire;
     wire [ADDR_BITS-1:0] in_addr_bus;
-    assign in_data_bus = (current_grant) ? i_data_core_2 : i_data_core_1;
+    assign in_data_bus = (current_grant) ? data_in_core_2_little_e : data_in_core_1_little_e;
     assign in_addr_bus = (current_grant) ? i_addr_2 : i_addr_1;
     assign dm_wire = (current_grant) ? i_dm_write_core_2 : i_dm_write_core_1;
-    assign o_data_core_1 = (!current_grant) ? out_data_bus : prev_out_data_bus_1;
-    assign o_data_core_2 = (current_grant) ? out_data_bus : prev_out_data_bus_2; 
-    
-    reg [31:0] prev_out_data_bus_1;
-    reg [31:0] prev_out_data_bus_2;
-    always @ (posedge clk) begin
-        if (current_grant) prev_out_data_bus_2 <= out_data_bus;
-        else prev_out_data_bus_1 <= out_data_bus;
-    end
+    assign o_data_core_1 = (!current_grant) ? out_data_bus : 32'h0;
+    assign o_data_core_2 = (current_grant) ? out_data_bus : 32'h0; 
     
     // Instantiate the BRAM
     dual_port_ram_bytewise_write #(.ADDR_WIDTH(ADDR_BITS) )
@@ -160,14 +149,7 @@ module OCM #(
             .weA(dm_wire),
             .addrA(in_addr_bus),
             .dinA(in_data_bus),
-            .doutA(out_data_bus),
-            
-            .clkB(clk),
-            .enaB(1'b1),
-            .addrB(addr_tb),
-            .dinB(),
-            .doutB(out_tb)
-            
+            .doutA(out_data_bus)
         
     );
     

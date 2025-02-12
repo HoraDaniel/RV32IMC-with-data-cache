@@ -88,13 +88,13 @@ instruction_dict= {
     'URET':     {'args':0,  'syntax':'none',                    'format':'N',   'opcode':2097267},
 
     # Atomics
-    'AMOSWAP.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 8},
+    'AMOSWAP.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 4},
     'AMOADD.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 0},
-    'AMOAND.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 12},
-    'AMOOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 10},
-    'AMOXOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 4},
-    'AMOMAX.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 20},
-    'AMOMIN.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 16}
+    'AMOAND.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 48},
+    'AMOOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 40},
+    'AMOXOR.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 16},
+    'AMOMAX.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 80},
+    'AMOMIN.W': {'args': 3, 'syntax': 'r-r-r', 'format': 'R', 'opcode':47, 'funct3':2, 'funct7': 64}
 
 
 }

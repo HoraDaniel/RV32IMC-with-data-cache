@@ -16,7 +16,7 @@ module dual_port_ram_bytewise_write #(
      //2**ADDR_WIDTH = RAM Depth
     parameter DATA_WIDTH = NUM_COL*COL_WIDTH, // Data Width in bits
     
-    parameter INITIAL_DATA = "datamem.coe"
+    parameter INITIAL_DATA = "datamem.mem"
     //--------------------------------------------------------------
      ) (
         input clkA,
@@ -37,10 +37,6 @@ module dual_port_ram_bytewise_write #(
     
     initial begin
         $readmemh(INITIAL_DATA, ram_block);
-        ram_block[0] <= 32'h00000000;
-        ram_block[1] <= 32'h00000003;
-        ram_block[2] <= 32'h0000000F;
-        ram_block[12'h123] <= 32'hEEEEEEEE;
     end
     
     integer i;
