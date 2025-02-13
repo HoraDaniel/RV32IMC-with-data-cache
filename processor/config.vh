@@ -5,7 +5,7 @@
 // `define FEATURE_DIV
 // `define FEATURE_XILINX_DATAMEM_IP_GEN
 
-`define REPO_LOCATION        "T:/Files/Projects/RV32IMC-Repo/pipelined-RV32IMC/"
+`define REPO_LOCATION        "F:/pipelined-RV32IMC/"
 `define TEST_LOCATION        "assembly-tests/riscv-compliance/"
 
 `endif

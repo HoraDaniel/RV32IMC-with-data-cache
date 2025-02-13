@@ -36,7 +36,7 @@ module OCM #(
     output reg o_grant_core_1,
     input [31:0] i_data_core_1,
     input [3:0] i_dm_write_core_1,
-    output [31:0] o_data_core_1,
+    //output [31:0] o_data_core_1,
     input [ADDR_BITS-1:0] i_addr_1,
 
     
@@ -46,15 +46,18 @@ module OCM #(
     output reg o_grant_core_2,
     input [31:0] i_data_core_2,
     input [3:0] i_dm_write_core_2,
-    output [31:0] o_data_core_2,
-    input [ADDR_BITS-1:0] i_addr_2
+    //output [31:0] o_data_core_2,
+    input [ADDR_BITS-1:0] i_addr_2,
 
+    output [31:0] o_data,
+    output reg valid_data,
+    output reg valid_write_data,
     
+    input [ADDR_BITS-1:0] addr_tb,
+    output [31:0] out_tb
     
     );
     
-    wire [31:0] data_in_core_1_little_e = {i_data_core_1[7:0], i_data_core_1[15:8], i_data_core_1[23:16], i_data_core_1[31:24]};
-     wire [31:0] data_in_core_2_little_e = {i_data_core_2[7:0], i_data_core_2[15:8], i_data_core_2[23:16], i_data_core_2[31:24]};
     
     // Implement an arbitration module
     // Signals
@@ -85,7 +88,10 @@ module OCM #(
                         
                         o_grant_core_1 <= 1;
                         o_grant_core_2 <= 0;
-                        if (i_done_core_1) current_grant <= 1;
+                        if (i_done_core_1) begin
+                            current_grant <= 1;
+                            o_grant_core_1 <= 0;
+                        end
                     end else if (i_req_core_2) begin
                         // Core 2 requests instead,
                         o_grant_core_2 <= 1;
@@ -107,7 +113,10 @@ module OCM #(
 
                         o_grant_core_2 <= 1;
                         o_grant_core_1 <= 0;
-                        if (i_done_core_2) current_grant <= 0;
+                        if (i_done_core_2) begin
+                            current_grant <= 0;
+                            o_grant_core_2 <= 0;
+                        end
                     end else if (i_req_core_1) begin
                         o_grant_core_2 <= 0;
                         o_grant_core_1 <= 1;
@@ -130,15 +139,77 @@ module OCM #(
     
     ///////////////////////////////////////////////////////////////////
     // The memory part
-    wire [31:0] in_data_bus;
+    // States
+    // MEM_WAIT - memory is waiting for a transaction
+    // MEM_GRANT - a core is granted access to the memory; input ports are latched to the memory
+    // MEM_RESP - since its ideal, need only one cycle to complete transactions. Assert necessary signals here
+    // MEM_DONE - done state;
+    
+
+    
+    localparam MEM_WAIT = 2'd0;
+    localparam MEM_GRANT = 2'd1;
+    localparam MEM_RESP = 2'd2;
+    localparam MEM_DONE = 2'd3;
+    
+    reg [2:0] m_state;
+    reg [31:0] in_data_bus;
     wire [31:0] out_data_bus;
-    wire [3:0] dm_wire;
-    wire [ADDR_BITS-1:0] in_addr_bus;
-    assign in_data_bus = (current_grant) ? data_in_core_2_little_e : data_in_core_1_little_e;
-    assign in_addr_bus = (current_grant) ? i_addr_2 : i_addr_1;
-    assign dm_wire = (current_grant) ? i_dm_write_core_2 : i_dm_write_core_1;
-    assign o_data_core_1 = (!current_grant) ? out_data_bus : 32'h0;
-    assign o_data_core_2 = (current_grant) ? out_data_bus : 32'h0; 
+    reg [3:0] dm_wire;
+    reg [ADDR_BITS-1:0] in_addr_bus;
+    
+    wire wr = |dm_wire;
+    wire rd = ~(|dm_wire);
+    always @ (posedge clk) begin
+       if (!nrst) begin
+            in_data_bus <= 0;
+            dm_wire <= 0;
+            valid_data <= 0;
+            m_state <= 0;
+       end else
+            case (m_state)
+                MEM_WAIT: begin
+                    if (i_req_core_1 && o_grant_core_1) begin
+                        in_data_bus <= i_data_core_1;
+                        in_addr_bus <= i_addr_1;
+                        dm_wire <= i_dm_write_core_1;
+                        m_state <= MEM_GRANT;
+                    end 
+                    else if (i_req_core_2 && o_grant_core_2) begin
+                        in_data_bus <= i_data_core_2;
+                        in_addr_bus <= i_addr_2;
+                        dm_wire <= i_dm_write_core_2;
+                        m_state <= MEM_GRANT;
+                    end
+                    else begin
+                        in_data_bus <= in_data_bus;
+                        in_addr_bus <= in_addr_bus;
+                        dm_wire <= dm_wire;
+                        m_state <= MEM_WAIT;
+                    end
+                end
+                
+                
+                MEM_GRANT: begin
+                    // We'll continue to next state, no take backs
+                    // We can put delays here or wait for some signal from AXI protocol
+                    m_state <= MEM_RESP;
+                    if (rd) valid_data <= 1;
+                    else if (wr) valid_write_data <= 1;
+                end
+                
+                MEM_RESP: begin
+                    // assert necessary valid signals
+                    m_state <= MEM_DONE;
+                    valid_data <= 0;
+                    valid_write_data <= 0;
+                end
+                
+                MEM_DONE: begin
+                    m_state <= MEM_WAIT;
+                end
+            endcase
+    end
     
     // Instantiate the BRAM
     dual_port_ram_bytewise_write #(.ADDR_WIDTH(ADDR_BITS) )
@@ -149,7 +220,13 @@ module OCM #(
             .weA(dm_wire),
             .addrA(in_addr_bus),
             .dinA(in_data_bus),
-            .doutA(out_data_bus)
+            .doutA(o_data),
+            
+            .clkB(clk),
+            .enaB(1'b1),
+            .addrB(addr_tb),
+            .doutB(out_tb)
+            
         
     );
     
